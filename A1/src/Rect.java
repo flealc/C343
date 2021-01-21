@@ -20,7 +20,6 @@ public class Rect {
         return x >= xmin && x <= xmax &&
                 y >= ymin && y <= ymax;
     }
-    //testing to see if this works
     
 
     /**
