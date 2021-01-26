@@ -24,6 +24,10 @@ class RectTest {
         Rect r5 = new Rect(0,0,0,0);
         Rect r6 = new Rect(1,1,1,1);
         Rect r7 = new Rect(-1,-1,1,1);
+        Rect r8 = new Rect(-10, 10, 0, 20);
+        Rect r9 = new Rect(10, -10, 20, 0);
+        Rect r10 = new Rect(-10, -10, 0, 0);
+        Rect r11 = new Rect(10, 10, 20, 20);
 
         assertFalse(r1.intersect(r2));
         assertTrue(r1.intersect(r3));
@@ -32,5 +36,17 @@ class RectTest {
         assertFalse(r6.intersect(r5));
         assertTrue(r5.intersect(r7));
         assertTrue(r7.intersect(r5));
+
+
+        //My test cases
+        assertTrue(r1.intersect(r1));
+        assertTrue(r1.intersect(r8));
+        assertTrue(r1.intersect(r9));
+        assertTrue(r1.intersect(r10));
+        assertTrue(r1.intersect(r11));
+
+
+
+
     }
 }

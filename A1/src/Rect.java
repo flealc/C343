@@ -28,7 +28,10 @@ public class Rect {
      * one point, that counts as an intersection.
      */
     boolean intersect(Rect r) {
-        return false; // TODO
+        return contains(r.xmin, r.ymax) || contains(r.xmax, r.ymin) ||
+                contains(r.xmax, r.ymax) || contains(r.xmin, r.ymin) || r.contains(this.xmin, this.ymax) ||
+                r.contains(this.xmax, this.ymin) || r.contains(this.xmax, this.ymax)
+                || r.contains(this.xmin, this.ymin); // TODO
     }
 
     public String toString() {
