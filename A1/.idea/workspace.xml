@@ -19,16 +19,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a916fc89-8614-4a37-934e-d65cd9f621c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_junit_jupiter_junit_jupiter_5_7_0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/A1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/A1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/A1/Rect.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/A1/Rect.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/test/A1/RectTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/test/A1/RectTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Rect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/RectTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/RectTest.java" afterDir="false" />
-    </list>
+    <list default="true" id="a916fc89-8614-4a37-934e-d65cd9f621c8" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -105,7 +96,7 @@
       <updated>1611244719403</updated>
       <workItem from="1611274463943" duration="3229000" />
       <workItem from="1611353774078" duration="4424000" />
-      <workItem from="1611600762843" duration="7584000" />
+      <workItem from="1611600762843" duration="7797000" />
     </task>
     <servers />
   </component>

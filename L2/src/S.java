@@ -19,7 +19,8 @@ class S {
      **/
     public static <E> List<E> triplicate (List<E> xs) {
         // TODO
-        return null;
+        return xs.stream().flatMap(e -> Stream.of(e,e,e))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -32,7 +33,7 @@ class S {
      **/
     public static List<Integer> square (List<Integer> xs) {
         // TODO
-        return null;
+        return xs.stream().map(e -> e*e).collect(Collectors.toList());
     }
 
     /**
@@ -44,6 +45,7 @@ class S {
      Refer to STest.java for more examples.
      **/
     public static boolean allEven (List<Integer> xs) {
+
         return xs.stream().allMatch(n -> n % 2 == 0);
     }
 
@@ -57,7 +59,7 @@ class S {
      **/
     public static List<Integer> evens (List<Integer> xs) {
         // TODO
-        return null;
+        return xs.stream().filter(n -> n % 2 == 0).collect(Collectors.toList());
     }
 
     /**
@@ -70,7 +72,7 @@ class S {
      **/
     public static int mul (List<Integer> xs) {
         // TODO
-        return 0;
+        return xs.stream().reduce(1, (x, y) -> x * y);
     }
 
     /**
@@ -82,6 +84,7 @@ class S {
      Refer to STest.java for more examples.
      **/
     public static int checksum (List<Integer> xs) {
+
         return xs.stream().reduce(0, (r,n) -> (r + n) % 10);
     }
 
@@ -95,7 +98,8 @@ class S {
      **/
     public static int lengths (List<String> xs) {
         // TODO
-        return 0;
+        return xs.stream()
+                .reduce(0, (x, y) -> x + y.length(), Integer::sum);
     }
 
     /**
