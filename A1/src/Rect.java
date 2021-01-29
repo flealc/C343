@@ -20,6 +20,7 @@ public class Rect {
         return x >= xmin && x <= xmax &&
                 y >= ymin && y <= ymax;
     }
+    
 
     /**
      * Returns true if the given rectangle r intersects the
