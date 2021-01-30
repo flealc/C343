@@ -18,6 +18,12 @@ abstract class List<E> {
         else
             return new NodeL<>(n, countdown(n-1));
     }
+    /**
+     * Getter Methods
+     * */
+    abstract E getFirst() throws EmptyListE;
+
+    abstract List<E> getRest() throws EmptyListE;
 
     /**
      * Computes the length of the list
@@ -93,6 +99,14 @@ abstract class List<E> {
 
 class EmptyL<E> extends List<E> {
 
+    E getFirst() throws EmptyListE {
+      throw new EmptyListE();
+    }
+
+    List<E> getRest() throws EmptyListE {
+      throw new EmptyListE();
+    }
+
     int length() {
         return 0; // TODO
     }
@@ -151,6 +165,14 @@ class NodeL<E> extends List<E> {
     NodeL (E first, List<E> rest) {
         this.first = first;
         this.rest = rest;
+    }
+
+    E getFirst() {
+      return this.first;
+    }
+
+    List<E> getRest() {
+      return this.rest;
     }
 
     int length() {
