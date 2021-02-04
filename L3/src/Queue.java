@@ -41,7 +41,7 @@ class SlowQueue<E> extends Queue<E> {
 
     /**
      * getFront returns an element of **generic type**.
-     * This method removes the first element of our queue and returns said element by using -Stack.java-'s getFront()
+     * This method returns the first element of our queue by using -Stack.java-'s getFront()
      *
      * @return the removed first element of out queue, E
      * @throws ????? (throws what and why)
@@ -98,8 +98,8 @@ class AmortizedQueue<E> extends Queue<E> {
     }
 
     /**
-     * Removes the first element in our queue and returns it. Similar to dequeue with maintaining the
-     * 2 stacks; the only thing that changes here is that we also return the item we are removing.
+     * Returns the first element in our queue. Similar to dequeue with maintaining the
+     * 2 stacks; the only thing that changes here is that we are not removing the top, but instead returning the element
      *
      * @return the removed first element of out queue, E
      * @throws ????? (throws what and why)
