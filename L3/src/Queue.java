@@ -27,8 +27,11 @@ class SlowQueue<E> extends Queue<E> {
      * @param elem a generic element to be added to the queue
      */
     void enqueue(E elem) {
-        // TODO
-    }
+            stack = stack.addLast(elem);                    // DONE
+        }
+
+
+
 
     /**
      * This method should remove the first element of our queue. Hint: look in -Stack.java-.
@@ -36,7 +39,10 @@ class SlowQueue<E> extends Queue<E> {
      * @throws ????? (throws what and why)
      */
     void dequeue() throws EmptyQueueE {
-        // TODO
+        try {  stack = stack.pop();                     // DONE
+        } catch (EmptyStackE e) {
+            throw new EmptyQueueE();
+        }
     }
 
     /**
@@ -94,7 +100,22 @@ class AmortizedQueue<E> extends Queue<E> {
      * @throws ????? (throws what and why)
      */
     void dequeue() throws EmptyQueueE {
-        // TODO
+        if (back.isEmpty()) {
+            try {
+                while (!front.isEmpty()) {
+                    back = back.push(front.getTop());
+                    front =front.pop();
+                }
+            } catch (EmptyStackE e) {
+                throw new EmptyQueueE();
+            }
+        }
+        try {
+            back = back.pop();
+        } catch (EmptyStackE e) {
+            throw new EmptyQueueE();
+        }
+// TODO
     }
 
     /**
@@ -105,7 +126,19 @@ class AmortizedQueue<E> extends Queue<E> {
      * @throws ????? (throws what and why)
      */
     E getFront() throws EmptyQueueE {
-        // TODO
-        return null;
+        if (back.isEmpty()) {
+            try {
+                while (!front.isEmpty()) {
+                    back = back.push(front.getTop());
+                    front = front.pop();
+                }
+            } catch (EmptyStackE e) {
+                throw new EmptyQueueE();
+            }
+        }
+            try { return back.getTop();
+            } catch (EmptyStackE e) {
+                throw new EmptyQueueE();
+            }
     }
 }
