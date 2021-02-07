@@ -54,7 +54,12 @@ public abstract class DequeueArray<E> {
      * If there is no room, grow the dequeue first
      */
     public void addFirst(E elem) {
-        // TODO
+        if (size==capacity) {
+            grow();
+        }
+        elements[front] = Optional.of(elem);
+        front = Math.floorMod(front-1,capacity);
+        size++;
     }
 
     /**
@@ -62,7 +67,12 @@ public abstract class DequeueArray<E> {
      * If there is no room, grow the dequeue first
      */
     public void addLast(E elem) {
-        // TODO
+        if (size==capacity) {
+                grow();
+            }
+        elements[back] = Optional.of(elem);
+        back = Math.floorMod(back+1,capacity);
+        size++;
     }
 
     public E getFirst() throws NoSuchElementE {
@@ -70,7 +80,7 @@ public abstract class DequeueArray<E> {
     }
 
     public E getLast() throws NoSuchElementE {
-        return null; // TODO
+        return elements[Math.floorMod(back-1,capacity)].orElseThrow(NoSuchElementE::new);
     }
 
     /**
@@ -78,7 +88,11 @@ public abstract class DequeueArray<E> {
      * If the dequeue is empty, throw an exception instead
      */
     public E removeFirst() throws NoSuchElementE {
-        return null; // TODO
+        front = Math.floorMod(front+1,capacity);
+        size --;
+        E temp = elements[front].orElseThrow(NoSuchElementE::new);
+        elements[front] = Optional.empty();
+        return temp;
     }
 
     /**
@@ -86,7 +100,12 @@ public abstract class DequeueArray<E> {
      * If the dequeue is empty, throw an exception instead
      */
     public E removeLast() throws NoSuchElementE {
-        return null; // TODO
+        back = Math.floorMod(back-1,capacity);
+        size --;
+        E temp1 = elements[back].orElseThrow(NoSuchElementE::new);
+        elements[back] = Optional.empty();
+        return temp1;
+
     }
 
     // the following methods are for debugging and testing
@@ -117,7 +136,23 @@ class DequeueArrayDouble<E> extends DequeueArray<E> {
      */
     @SuppressWarnings("unchecked")
     void grow() {
-        // TODO
+        Optional<E>[] bigger = (Optional<E>[]) Array.newInstance(Optional.class,  2 * capacity);
+        Arrays.fill(bigger, Optional.empty());
+
+        for (int i = 0; i < capacity; i ++) {
+            try {
+                bigger[i] = Optional.of(removeFirst());
+
+            } catch (NoSuchElementE e){
+                 new NoSuchElementE();
+            }
+        }
+        elements = bigger;
+        size = capacity;
+        capacity *= 2;
+        front = capacity - 1;
+        back = size;
+
     }
 }
 
@@ -136,7 +171,24 @@ class DequeueArrayOneAndHalf<E> extends DequeueArray<E> {
      */
     @SuppressWarnings("unchecked")
     void grow() {
-        // TODO
+        int newCap = (int) Math.round(1.5 * capacity);
+        Optional<E>[] bigger = (Optional<E>[]) Array.newInstance(Optional.class, newCap);
+        Arrays.fill(bigger, Optional.empty());
+
+
+        for (int i = 0; i < capacity; i ++) {
+            try {
+                bigger[i] = Optional.of(removeFirst());
+            } catch (NoSuchElementE e){
+                new NoSuchElementE();
+            }
+        }
+        elements = bigger;
+        size = capacity;
+        capacity = newCap;
+        front = capacity - 1;
+        back = size;
+
     }
 }
 
@@ -155,6 +207,23 @@ class DequeueArrayPlusOne<E> extends DequeueArray<E> {
      */
     @SuppressWarnings("unchecked")
     void grow() {
-        // TODO
+        int newCap = capacity + 1;
+        Optional<E>[] bigger = (Optional<E>[]) Array.newInstance(Optional.class, newCap);
+        Arrays.fill(bigger, Optional.empty());
+
+        for (int i = 0; i < capacity; i ++) {
+            try {
+                bigger[i] = Optional.of(removeFirst());
+            } catch (NoSuchElementE e){
+                new NoSuchElementE();
+            }
+        }
+
+        elements = bigger;
+        size = capacity;
+        capacity = newCap;
+        front = capacity - 1;
+        back = size;
+
     }
 }
