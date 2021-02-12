@@ -17,7 +17,7 @@ class Word {
      * (YOU MAY NOT USE BUILT-IN hashCode)
      */
     // TODO after testing
-    public int hashCode () { return 7; }
+    public int hashCode () { return Math.floorMod( 31 * (w.length() + w.charAt(0)) * (w.length() + w.charAt(w.length()-1)), 7919); }
 }
 
 class Words {
