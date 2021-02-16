@@ -1,16 +1,13 @@
 import org.junit.jupiter.api.Test;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HashTableTest {
 
     @Test
-    public void simpleLinear () {
+    public void simpleLinear () throws NotFoundE {
         HashTable<Integer,String> ht = new HashLinearProbing<>();
         ht.insert(0,"lamb");
         ht.insert(1,"cat");
@@ -31,6 +28,8 @@ public class HashTableTest {
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(4,"cow")),slots.get(4));
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(5,"chicken")),slots.get(5));
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(6,"monkey")),slots.get(6));
+
+
     }
 
     @Test
@@ -59,7 +58,7 @@ public class HashTableTest {
 
 
     @Test
-    public void clashQuad () {
+    public void clashQuad () throws NotFoundE {
         HashTable<Integer,String> ht = new HashQuadProbing<>();
         ht.insert(0,"lamb");
         ht.insert(17,"cat");
@@ -69,6 +68,7 @@ public class HashTableTest {
         ht.insert(8, "fox");
         ht.insert(85,"tiger");
 
+        assertEquals("fox", ht.search(8));
         assertEquals(7, ht.getSize());
         assertTrue(ht.getDeleted().isEmpty());
 
@@ -79,6 +79,7 @@ public class HashTableTest {
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(51,"horse")),slots.get(9));
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(8,"fox")),slots.get(8));
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(85,"tiger")),slots.get(2));
+
     }
 
     @Test
@@ -125,24 +126,29 @@ public class HashTableTest {
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(14,"dog")),slots.get(14));
         assertEquals(Optional.of(new AbstractMap.SimpleImmutableEntry<>(49,"lion")),slots.get(15));
         assertTrue(slots.get(16).isEmpty());
+
     }
+
 
     @Test
     public void deletes () throws NotFoundE {
-        HashTable<Integer,String> ht = new HashLinearProbing<>();
+        HashTable<Integer, String> ht = new HashLinearProbing<>();
 
-        ht.insert(1,"cat");
-        ht.insert(18,"dog");
-        ht.insert(35,"horse");
-        ht.insert(52,"cow");
-        ht.insert(69,"chicken");
-        ht.insert(86,"lion");
-        ht.insert(103,"tiger");
-        ht.insert(120,"cheetah");
+        ht.insert(1, "cat");
+        ht.insert(18, "dog");
+        ht.insert(35, "horse");
+        ht.insert(52, "cow");
+        ht.insert(69, "chicken");
+        ht.insert(86, "lion");
+        ht.insert(103, "tiger");
+        ht.insert(120, "cheetah");
+
 
         assertThrows(NotFoundE.class, () -> ht.delete(1000));
         ht.delete(18);
+
         ht.delete(69);
+
 
         assertThrows(NotFoundE.class, () -> ht.search(18));
         assertThrows(NotFoundE.class, () -> ht.search(69));
@@ -161,7 +167,104 @@ public class HashTableTest {
         ht.insert(18, "fox");
         assertEquals(ht.getSlots().get(2).orElseThrow(NotFoundE::new).getValue(), "fox");
     }
+     /** My Test Cases
+      *
+      * Did animals in Spanish, just for fun.
+      * */
 
-    // TODO
-    // your own test cases here
+        @Test
+        public void myTestCases () throws NotFoundE {
+            HashTable<Integer,String> ht = new HashQuadProbing<>();
+
+            ht.insert(25, "oso");
+            ht.insert(3, "perro");
+            ht.insert(67, "gato");
+            ht.insert(45, "cabra");
+            ht.insert(6, "leon");
+
+            assertEquals("oso", ht.search(25));
+            assertEquals("perro", ht.search(3));
+            assertEquals("gato", ht.search(67));
+            assertEquals("cabra", ht.search(45));
+
+            ht.insert(17, "vaca");
+            ht.insert(18, "dodo");
+            ht.insert(25, "conejo");
+            ht.insert(33, "canguro");
+
+
+
+            ht.delete(17);
+            assertEquals("oso", ht.search(25));
+            assertEquals("perro", ht.search(3));
+            assertEquals("gato", ht.search(67));
+            assertEquals("cabra", ht.search(45));
+            assertEquals("leon", ht.search(6));
+            assertThrows(NotFoundE.class, () -> ht.search(17));
+            assertEquals("dodo", ht.search(18));
+            ht.insert(17, "toro");
+            assertEquals("toro", ht.search(17));
+            ht.delete(17);
+            assertThrows(NotFoundE.class, () -> ht.search(17));
+            assertEquals("cabra", ht.search(45));
+            assertEquals("cabra", ht.search(45));
+            ht.insert(34, "ternero");
+            assertEquals("oso", ht.search(25));
+            assertEquals("perro", ht.search(3));
+            assertEquals("gato", ht.search(67));
+            assertEquals("cabra", ht.search(45));
+            assertEquals("leon", ht.search(6));
+            assertEquals("ternero", ht.search(34));
+            ht.delete(34);
+            assertThrows(NotFoundE.class, () -> ht.delete(34));
+
+
+
+            HashTable<Integer, String> ht1 = new HashLinearProbing<>();
+
+            ht1.insert(25, "oso");
+            ht1.insert(3, "perro");
+            ht1.insert(67, "gato");
+            ht1.insert(45, "cabra");
+            ht1.insert(6, "leon");
+
+            assertEquals("oso", ht1.search(25));
+            assertEquals("perro", ht1.search(3));
+            assertEquals("gato", ht1.search(67));
+            assertEquals("cabra", ht1.search(45));
+
+            ht1.insert(17, "vaca");
+            ht1.insert(18, "dodo");
+            ht1.insert(25, "conejo");
+            ht1.insert(33, "canguro");
+
+
+
+            ht1.delete(17);
+            assertEquals("oso", ht1.search(25));
+            assertEquals("perro", ht1.search(3));
+            assertEquals("gato", ht1.search(67));
+            assertEquals("cabra", ht1.search(45));
+            assertEquals("leon", ht1.search(6));
+            assertThrows(NotFoundE.class, () -> ht1.search(17));
+            assertEquals("dodo", ht1.search(18));
+            ht1.insert(17, "toro");
+            assertEquals("toro", ht1.search(17));
+            ht1.delete(17);
+            assertThrows(NotFoundE.class, () -> ht1.search(17));
+            assertEquals("cabra", ht1.search(45));
+            assertEquals("cabra", ht1.search(45));
+            ht1.insert(34, "ternero");
+            assertEquals("oso", ht1.search(25));
+            assertEquals("perro", ht1.search(3));
+            assertEquals("gato", ht1.search(67));
+            assertEquals("cabra", ht1.search(45));
+            assertEquals("leon", ht1.search(6));
+            assertEquals("ternero", ht1.search(34));
+            ht1.delete(34);
+            assertThrows(NotFoundE.class, () -> ht1.delete(34));
+
+        }
+
+
 }

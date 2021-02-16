@@ -93,8 +93,18 @@ abstract class HashTable<K,V> {
     //     if (size > capacity / 2) rehash();
     //   this will force the array to grow as soon as
     //   it is half full
-    void insert(K key, V value, int index, int collision) {
-        // TODO
+    void insert(K key, V value, int index, int collision) { //TODO
+        int indexH = nextHash(index, collision);
+        if ( !slots.get(indexH).equals(Optional.empty())) {
+            insert(key, value, index, collision + 1);
+        } else {
+        slots.set(indexH,Optional.of(new AbstractMap.SimpleImmutableEntry<>(key, value)));
+        size++;
+
+        if (deleted.contains(indexH)) {deleted.remove(indexH);}}
+        if (size > capacity / 2) {
+            rehash();
+        }
     }
 
     // -------------------------------------------------------
@@ -125,7 +135,27 @@ abstract class HashTable<K,V> {
     // - otherwise, set slot 'h' to empty, decrement size,
     //   and add 'h' to the collection of deleted indices
     void delete(K key, int index, int collision) throws NotFoundE {
-        // TODO
+        int indexH = nextHash(index, collision);
+        if (collision == capacity) {
+            throw new NotFoundE();} else
+
+
+        if (deleted.contains(indexH)) {
+
+            delete(key, index, collision + 1);
+        } else
+        if (slots.get(indexH).equals(Optional.empty())){
+
+            throw new NotFoundE();} else
+
+        if (!(slots.get(indexH).get().getKey().equals(key))) {
+            delete(key, index, collision + 1);
+        } else {
+
+            slots.set(indexH, Optional.empty());
+            size--;
+            deleted.add(indexH);
+        }
     }
 
     // -------------------------------------------------------
@@ -134,11 +164,23 @@ abstract class HashTable<K,V> {
     // for deleting and is left for you as an exercise
 
     V search(K key) throws NotFoundE {
-        return null; // TODO
+        return search(key, hash(key), 0);                           // TODO
     }
 
-    V search(K key, int index, int collision) throws NotFoundE {
-        return null; // TODO
+    V search(K key, int index, int collision) throws NotFoundE {            // TODO
+        int indexH = nextHash(index, collision);
+        if (collision == capacity) {throw new NotFoundE();}
+        if (deleted.contains(indexH)) {
+            return search(key, index, collision + 1);
+        }
+        if (slots.get(indexH).equals(Optional.empty())){throw new NotFoundE();}
+
+        if (!(slots.get(indexH).get().getKey().equals(key))) {
+            return search(key, index, collision + 1);
+        }
+
+        return slots.get(indexH).get().getValue();
+
     }
 
     // -------------------------------------------------------
@@ -152,15 +194,32 @@ abstract class HashTable<K,V> {
     //   and inserts it in the new array
     // - replace the old array by the new one and clear the
     //   collection of deleted indices
-    void rehash () {
-        // TODO
-    }
+    void rehash () {                                        // TODO
+        int newCap = BigInteger.valueOf(capacity * 2L).nextProbablePrime().intValue();
+        ArrayList<Optional<Map.Entry<K, V>>> newArr;
+        newArr = slots;
+        this.slots = new ArrayList<>(newCap);
+        for (int i = 0; i < newCap; i++) this.slots.add(i, Optional.empty());
+        capacity = newCap;
 
+        size = 0;
+
+        for (int i = 0; i < newArr.size(); i ++) {
+
+            if (!(newArr.get(i).equals(Optional.empty()))) {
+
+                insert(newArr.get(i).get().getKey(), newArr.get(i).get().getValue());
+            }
+        }
+        deleted.clear();
+
+
+    }
     // -------------------------------------------------------
 
     public String toString () {
         String result = "";
-        for (int i = 0; i< capacity; i++) {
+        for (int i = 0; i < capacity; i++) {
             result += "entry[" + i + "] = ";
             result += deleted.contains(i) ? "***" : slots.get(i).toString();
             result += "\n";
