@@ -16,6 +16,7 @@ class SortTest {
         System.out.printf("insertionSort = %s%n%n", Sort.insertionSort(ns));
     }
 
+    @Test
     void timeSort () {
         Instant start = Instant.now();
         // TODO efficiency tests
