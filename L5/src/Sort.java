@@ -10,8 +10,26 @@ public class Sort {
 
     // For those who prefer wordier instructions, check out Lab 5 post on canvas :)
     // Otherwise, best of luck on the lab! Tests/debugging will help a lot with IndexOutOfBoundsExceptions
-    static List<Integer> insertionSort (List<Integer> ns) {
-        // TODO
-        return null;
+    static List<Integer> insertionSort(List<Integer> ns) {
+
+        ArrayList<Integer> toSort = new ArrayList<Integer>(ns);
+
+
+        for (int i = 1; i < ns.size(); i++) {
+            int current = ns.get(i);
+            int predIndex = i - 1;
+
+            while (predIndex >= 0 && toSort.get(predIndex) > current) {
+                toSort.set(predIndex + 1, toSort.get(predIndex));
+                predIndex = predIndex - 1;
+            }
+
+            toSort.set(predIndex + 1, current);
+        }
+
+        return toSort;
+
+
     }
 }
+
