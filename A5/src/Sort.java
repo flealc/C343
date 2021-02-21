@@ -11,11 +11,24 @@ public class Sort {
         return ns.stream().sorted().collect(Collectors.toList());
     }
 
-    static List<Integer> insertionSort (List<Integer> ns) {
-        return null; // TODO (from lab)
+    static List<Integer> insertionSort(List<Integer> ns) {
+        ArrayList<Integer> toSort = new ArrayList<>(ns);
+        for (int i = 1; i < ns.size(); i++) {
+            int current = ns.get(i);
+            int predIndex = i - 1;
+
+            while (predIndex >= 0 && toSort.get(predIndex) > current) {
+                toSort.set(predIndex + 1, toSort.get(predIndex));
+                predIndex = predIndex - 1;
+            }
+
+            toSort.set(predIndex + 1, current);
+        }
+
+        return toSort;
     }
 
-    static List<Integer> mergeSort (List<Integer> ns) {
+    static List<Integer> mergeSort(List<Integer> ns) {
         // real work done in PList
         return PList.toList(PList.fromList(ns).mergeSort());
     }
@@ -27,39 +40,99 @@ public class Sort {
         if (n % 2 == 0)
             return (int) (9 * Math.pow(2, n) - 9 * Math.pow(2, n / 2) + 1);
         else
-            return (int) (8 * Math.pow(2,n) - 6 * Math.pow(2,(n + 1) / 2) + 1);
+            return (int) (8 * Math.pow(2, n) - 6 * Math.pow(2, (n + 1) / 2) + 1);
     }
 
     /**
      * Steps:
      * 1. create an array incSequence that calls increment above until the
-     *    gap is more than half of the size of the array
+     * gap is more than half of the size of the array
      * 2. Start from the largest gap and iterate down the list of gaps
      * 3. For each gap, do an insertion sort for the elements separated
-     *    by the given gap
+     * by the given gap
      */
-    static List<Integer> shellSort (List<Integer> ns) {
-        return null; // TODO
+    static List<Integer> shellSort(List<Integer> ns) {   // TODO
+
+        ArrayList<Integer> incSequence = new ArrayList();
+        for (int i = 0; increment(i) <= (ns.size() / 2); i++) {
+
+            incSequence.add(i, increment(i));
+        }
+
+
+        ArrayList<Integer> toSort = new ArrayList(ns);
+
+
+        for (int i = incSequence.size() - 1; i >= 0; i--) {
+            int gap = incSequence.get(i);
+
+
+            for (int j = gap; j < ns.size(); j++) {
+                int current = toSort.get(j);
+                int predIndex = j - gap;
+
+                while (predIndex >= 0 && toSort.get(predIndex) > current) {
+                    toSort.set(predIndex + 1, toSort.get(predIndex));
+                    predIndex = predIndex - 1;
+                }
+
+                toSort.set(predIndex + gap, current);
+            }
+
+        }
+
+        //for (int j = gap ; j < toSort.size(); j++) {
+        //    int temp = toSort.get(j);
+        //    int k;
+        //    for (k = j; k >= gap && toSort.get(k - gap) > temp; k = k - gap) {
+        //        toSort.set(k, toSort.get(k - gap));
+        //    }
+        //    toSort.set(k, temp);
+        //}
+
+
+        return toSort;
     }
 
-    static int getDigit (int n, int d) {
+    static int getDigit(int n, int d) {
         if (d == 0) return n % 10;
-        else return getDigit (n / 10, d-1);
+        else return getDigit(n / 10, d - 1);
     }
 
     /**
      * Steps:
      * 1. Create 10 buckets represented as ArrayLists, one for each digit
      * 2. For each digit d (d=0 to len-1) with 0 the least significant digit,
-     *    do the following
+     * do the following
      * 3. Take a number from the input list, look at digit 'd' in that number,
-     *    and add it to the bucket 'd'
+     * and add it to the bucket 'd'
      * 4. When you finish processing the list, copy the contents of the
-     *    buckets into a temporary list
+     * buckets into a temporary list
      * 5. Clear the buckets and repeat for the next 'd'
      */
-    static List<Integer> radixSort (List<Integer> ns, int len) {
-        return null; // TODO
-    }
+    static List<Integer> radixSort(List<Integer> ns, int len) {
 
+        ArrayList<ArrayList<Integer>> buckets = new ArrayList();
+        for (int i = 0; i < 10; i ++) {
+            buckets.add(new ArrayList<Integer>());
+        }
+        List<Integer> temp = new ArrayList(ns);
+
+
+
+        for (int i = 0; i < len; i++) {
+
+            for (int j = 0; j < temp.size(); j++) {
+                buckets.get(getDigit(temp.get(j), i)).add(temp.get(j));
+            }
+            temp.clear();
+
+            for (int k = 0; k < 10; k ++) {
+                temp.addAll(buckets.get(k));
+                buckets.get(k).clear();
+            }
+
+        }
+        return temp;
+    }
 }
