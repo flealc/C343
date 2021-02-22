@@ -94,4 +94,11 @@ class SortTest {
 
 
     }
+
+    @Test
+    void mergeSort () {
+        List<Integer> list = Arrays.asList(56,97,118,41,109,929,576,505);
+        List<Integer> expected = Arrays.asList(41,56,97,109,118,505,576,929);
+        assertEquals(expected, Sort.mergeSort(list));
+    }
 }

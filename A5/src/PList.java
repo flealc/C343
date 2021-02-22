@@ -63,15 +63,16 @@ class PEmpty extends PList {
     }
 
     Pair<PList, PList> splitAt(int index) {
-        return null; // TODO
+
+        return new Pair(new PEmpty(),new PEmpty()); // TODO
     }
 
     PList mergeSort() {
-        return null; // TODO
+        return this; // TODO
     }
 
     PList merge(PList ns) {
-        return null; // TODO
+        return this; // TODO
     }
 }
 
@@ -99,15 +100,68 @@ class PNode extends PList {
         return len;
     }
 
-    Pair<PList, PList> splitAt(int index) {
-        return null; // TODO
-    }
+    Pair<PList, PList> splitAt(int index) {  // TODO
 
+        if (index == 0) {
+           return new Pair(new PEmpty(), this);
+        } else {
+            return this.splitAt(index -1);
+        }
+
+        /*
+        PList tempPListA = new PEmpty();
+        PList tempPListB = this;
+
+        for (int i = 0; i < index; i++) {
+            try {
+            tempPListA = new PNode(tempPListB.getElem(), tempPListA);
+            tempPListB = tempPListB.getRest();
+            } catch (PEmptyE e) {
+            }
+        }
+        System.out.println(toList(tempPListA));
+        System.out.println(toList(tempPListB));
+        return new Pair(tempPListA, tempPListB);
+
+ */
+    }
     PList mergeSort() {
-        return null; // TODO
+        //* if empty return empty, if length 1 return ns.
+
+      /* Pair<PList, PList> divided = this.splitAt(this.length() / 2);
+       if (length() < 2) {
+           return this;
+       }
+
+       if (divided.getFst().equals(new Pair(new PEmpty(),new PEmpty()))) {
+            return divided.getSnd();
+        }
+        if (divided.getSnd().equals(new Pair(new PEmpty(),new PEmpty()))) {
+            return divided.getFst();
+        } else {
+            divided.getFst().mergeSort();
+            divided.getSnd().mergeSort();
+        }
+        System.out.println(divided.getFst());
+        System.out.println(divided.getSnd());
+        return divided.getFst().merge(divided.getSnd());
+
+       */
     }
 
     PList merge(PList ns) {
+        if (ns.length() == 0) {
+            return this;
+        } else if (this.length() == 0) {
+            return ns;
+        } else if (getElem() < this.getElem()) {
+            return new PNode(getElem(), new PNode(this.getElem(), new PEmpty()));
+        } else if (this.getElem() < getElem()) {
+            return new PNode(getElem(), new PNode(this.getElem(), new PEmpty()));
+        }
+
+
+        
         return null; // TODO
     }
 }
