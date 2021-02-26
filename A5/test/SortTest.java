@@ -76,6 +76,7 @@ class SortTest {
         System.out.printf("Radix sort takes %d ms%n", d);
     }
 
+<<<<<<< HEAD
 
     /** My Test Cases */
 
@@ -102,3 +103,6 @@ class SortTest {
         assertEquals(expected, Sort.mergeSort(list));
     }
 }
+=======
+}
+>>>>>>> 84ab3fa1bf14a6fb9f53caf93905c6d9d9e15549
