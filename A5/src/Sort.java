@@ -66,32 +66,16 @@ public class Sort {
         for (int i = incSequence.size() - 1; i >= 0; i--) {
             int gap = incSequence.get(i);
 
-
             for (int j = gap; j < ns.size(); j++) {
-                int current = toSort.get(j);
-                int predIndex = j - gap;
-
-                while (predIndex >= 0 && toSort.get(predIndex) > current) {
-                    toSort.set(predIndex + 1, toSort.get(predIndex));
-                    predIndex = predIndex - 1;
+                int temp = toSort.get(j);
+                int k;
+                for (k = j; k >= gap && toSort.get(k - gap) > temp; k = k - gap) {
+                    toSort.set(k, toSort.get(k - gap));
                 }
-
-                toSort.set(predIndex + gap, current);
+                toSort.set(k, temp);
             }
-
         }
-
-        //for (int j = gap ; j < toSort.size(); j++) {
-        //    int temp = toSort.get(j);
-        //    int k;
-        //    for (k = j; k >= gap && toSort.get(k - gap) > temp; k = k - gap) {
-        //        toSort.set(k, toSort.get(k - gap));
-        //    }
-        //    toSort.set(k, temp);
-        //}
-
-
-        return toSort;
+            return toSort;
     }
 
     static int getDigit(int n, int d) {

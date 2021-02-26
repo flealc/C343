@@ -35,7 +35,7 @@ class SortTest {
 
         assertEquals(sorted, Sort.streamSort(ns));
         assertEquals(sorted, Sort.insertionSort(ns));
-       // assertEquals(sorted, Sort.mergeSort(ns));
+       assertEquals(sorted, Sort.mergeSort(ns));
         assertEquals(sorted, Sort.shellSort(ns));
         assertEquals(sorted, Sort.radixSort(ns,3));
     }
@@ -99,8 +99,11 @@ class SortTest {
     @Test
     void mergeSort () {
         List<Integer> list = Arrays.asList(56,97,118,41,109,929,576,505);
-        List<Integer> expected = Arrays.asList(41,56,97,109,118,505,576,929);
-        assertEquals(expected, Sort.mergeSort(list));
+        //List<Integer> expected = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        ///List<Integer> list = Arrays.asList(10, 9, 5, 7, 8, 3, 1, 2, 4, 6);
+        List<Integer> expected = Arrays.asList(41,56,97, 109, 118, 505, 576, 929);
+        //3, 1, 2, 4, 6, 10, 9, 5, 7, 8
+        assertEquals(expected, Sort.shellSort(list));
     }
 }
 =======
