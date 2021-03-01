@@ -117,4 +117,14 @@ public class DPTest {
         List<Character> cs2 = List.MakeList(g, 250);
         assertEquals(240, DP.mlcs(cs1, cs2).length());
     }
+
+
+    @Test
+    public void myPartitionCorrectness() {
+        List<Integer> ns = new Node<>(-3, new Node<>(6,
+                new Node<>(3, new Node<>(1, new Empty<>()))));
+        assertFalse(DP.partition(ns, 2));
+        assertTrue(DP.partition(ns, 3));
+        assertTrue(DP.partition(ns, 6));
+    }
 }

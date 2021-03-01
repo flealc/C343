@@ -112,13 +112,40 @@ class DP {
      * subsequence of the list whose sum is exactly 's'
      */
     static boolean partition (List<Integer> s, int sum) {
-         return false; // TODO
-    }
+       try {
+           if (s.isEmpty()) return false;
+           if (sum - s.getFirst() == 0) return true;
+           else if (sum - s.getFirst() > 0) {
+               return partition(s.getRest(), sum - s.getFirst());
+           }
+           else return partition(s.getRest(), sum);
 
+       } catch (EmptyListE e) {
+           return false;
+       }
+       }
+    //if (sum - s.getFirst() < 0) {
     static final Map<Pair<List<Integer>,Integer>,Boolean> partitionMemo = new HashMap<>();
 
     static boolean mpartition (List<Integer> s, int sum) {
-        return false; // TODO
+        Pair<List<Integer>,Integer> probKey = new Pair(s, sum);
+        if (partitionMemo.containsKey(probKey)) return partitionMemo.get(probKey);
+
+        Boolean answer;
+
+        try {
+            if (s.isEmpty()) return false;
+            if (sum - s.getFirst() == 0) return true;
+            else if (sum - s.getFirst() > 0) {
+                answer = partition(s.getRest(), sum - s.getFirst());
+            }
+            else answer = partition(s.getRest(), sum);
+
+        } catch (EmptyListE e) {
+            answer = false;
+        }
+        partitionMemo.put(probKey,answer);
+        return answer;
     }
 
     // -----------------------------------------------------------------------------
@@ -147,8 +174,22 @@ class DP {
      * the least penalty)
      */
     static int minDistance (List<BASE> dna1, List<BASE> dna2) {
-        return 0; // TODO
-    }
+        if (dna1.isEmpty() && dna2.isEmpty()) return 0;
+        if (dna1.isEmpty() || dna2.isEmpty()) return 0;
+
+       try {
+           int acceptMismatch = MISMATCH + minDistance(dna1.getRest(), dna2.getRest());
+           int gapADN1 = GAP + minDistance(dna1, dna2.getRest());
+           int gapADN2 = GAP + minDistance(dna1.getRest(), dna2);
+            System.out.println(Math.min(Math.min(gapADN1, gapADN2), acceptMismatch));
+           return Math.min(Math.min(gapADN1, gapADN2), acceptMismatch);
+
+       }catch (EmptyListE e) {
+           return 0;
+           }
+       }
+
+
 
     static final Map<Pair<List<BASE>,List<BASE>>,Integer> minDistanceMemo = new HashMap<>();
 
