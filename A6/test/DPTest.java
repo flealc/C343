@@ -58,9 +58,9 @@ public class DPTest {
     public void partitionCorrectness() {
         List<Integer> ns = new Node<>(5, new Node<>(3,
                 new Node<>(7, new Node<>(1, new Empty<>()))));
-        assertFalse(DP.partition(ns, 2));
-        assertTrue(DP.partition(ns, 8));
-        assertTrue(DP.partition(ns, 6));
+        assertFalse(DP.mpartition(ns, 2));
+        assertTrue(DP.mpartition(ns, 8));
+        assertTrue(DP.mpartition(ns, 6));
     }
 
     @Test
@@ -121,10 +121,39 @@ public class DPTest {
 
     @Test
     public void myPartitionCorrectness() {
-        List<Integer> ns = new Node<>(-3, new Node<>(6,
-                new Node<>(3, new Node<>(1, new Empty<>()))));
-        assertFalse(DP.partition(ns, 2));
-        assertTrue(DP.partition(ns, 3));
-        assertTrue(DP.partition(ns, 6));
+        List<Integer> ns = new Node<>(-3, new Node<>(-6,
+                new Node<>(4, new Node<>(1, new Empty<>()))));
+        assertFalse(DP.partition(ns, 3));
+        assertTrue(DP.partition(ns, 1));
+        assertTrue(DP.partition(ns, -1));
+    }
+
+
+    @Test
+    public void myminDistance() {
+        List<DP.BASE> dna1 =
+                new Node<>(DP.BASE.A, new Node<>(DP.BASE.C, new Node<>(DP.BASE.G, new Empty<>())));
+
+        List<DP.BASE> dna2 =
+                new Node<>(DP.BASE.A, new Node<>(DP.BASE.G, new Node<>(DP.BASE.T, new Node<>(DP.BASE.C, new Empty<>()))));
+        assertEquals(4, DP.mminDistance(dna1, dna2));
+    }
+
+    @Test
+    public void myminDistance1() {
+        List<DP.BASE> dna1 =
+                new Node<>(DP.BASE.A, new Node<>(DP.BASE.C, new Node<>(DP.BASE.G, new Empty<>())));
+
+        List<DP.BASE> dna2 =
+                new Node<>(DP.BASE.A, new Node<>(DP.BASE.G, new Empty<>()));
+        assertEquals(2, DP.mminDistance(dna1, dna2));
+    }
+
+    @Test
+    public void mypartitionCorrectness() {
+        List<Integer> ns = new Node<>(-3, new Node<>(3,new Node<>(7, new Node<>(1, new Empty<>()))));
+        assertFalse(DP.mpartition(ns, 2));
+        assertTrue(DP.mpartition(ns, 0));
+        assertTrue(DP.mpartition(ns, -2));
     }
 }

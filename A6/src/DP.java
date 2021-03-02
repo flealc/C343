@@ -113,18 +113,18 @@ class DP {
      */
     static boolean partition (List<Integer> s, int sum) {
        try {
-           if (s.isEmpty()) return false;
-           if (sum - s.getFirst() == 0) return true;
-           else if (sum - s.getFirst() > 0) {
-               return partition(s.getRest(), sum - s.getFirst());
+           if (sum == 0) return true;
+           else {
+                boolean use = partition(s.getRest(), sum - s.getFirst());
+                boolean dontUse = partition(s.getRest(), sum);
+               return mpartition(s.getRest(), sum - s.getFirst()) || mpartition(s.getRest(), sum);
            }
-           else return partition(s.getRest(), sum);
 
        } catch (EmptyListE e) {
            return false;
        }
        }
-    //if (sum - s.getFirst() < 0) {
+
     static final Map<Pair<List<Integer>,Integer>,Boolean> partitionMemo = new HashMap<>();
 
     static boolean mpartition (List<Integer> s, int sum) {
@@ -132,18 +132,19 @@ class DP {
         if (partitionMemo.containsKey(probKey)) return partitionMemo.get(probKey);
 
         Boolean answer;
-
         try {
-            if (s.isEmpty()) return false;
-            if (sum - s.getFirst() == 0) return true;
-            else if (sum - s.getFirst() > 0) {
-                answer = partition(s.getRest(), sum - s.getFirst());
+            if (sum == 0) {
+                answer = true;
             }
-            else answer = partition(s.getRest(), sum);
+            else {
+
+                answer = mpartition(s.getRest(), sum - s.getFirst()) || mpartition(s.getRest(), sum);
+            }
 
         } catch (EmptyListE e) {
-            answer = false;
+            return false;
         }
+
         partitionMemo.put(probKey,answer);
         return answer;
     }
@@ -174,14 +175,15 @@ class DP {
      * the least penalty)
      */
     static int minDistance (List<BASE> dna1, List<BASE> dna2) {
-        if (dna1.isEmpty() && dna2.isEmpty()) return 0;
-        if (dna1.isEmpty() || dna2.isEmpty()) return 0;
-
+    if (dna1.isEmpty() && dna2.isEmpty()) return 0;
        try {
+           if (dna1.isEmpty() && !dna2.isEmpty()) return GAP + minDistance(dna1, dna2.getRest());
+           if (dna2.isEmpty() && !dna1.isEmpty()) return GAP + minDistance(dna2, dna1.getRest());
+           if (dna1.getFirst().equals(dna2.getFirst())) return minDistance(dna1.getRest(), dna2.getRest());
            int acceptMismatch = MISMATCH + minDistance(dna1.getRest(), dna2.getRest());
            int gapADN1 = GAP + minDistance(dna1, dna2.getRest());
            int gapADN2 = GAP + minDistance(dna1.getRest(), dna2);
-            System.out.println(Math.min(Math.min(gapADN1, gapADN2), acceptMismatch));
+
            return Math.min(Math.min(gapADN1, gapADN2), acceptMismatch);
 
        }catch (EmptyListE e) {
@@ -194,7 +196,46 @@ class DP {
     static final Map<Pair<List<BASE>,List<BASE>>,Integer> minDistanceMemo = new HashMap<>();
 
     static int mminDistance (List<BASE> dna1, List<BASE> dna2) {
-        return 0; // TODO
+
+        Pair<List<BASE>,List<BASE>> probKey = new Pair(dna1, dna2);
+        if (minDistanceMemo.containsKey(probKey)) return minDistanceMemo.get(probKey);
+
+        int answer;
+
+        try {
+            if (dna1.isEmpty() && dna2.isEmpty()) {
+                answer = 0;
+                minDistanceMemo.put(probKey,answer);
+                return answer;
+            }
+
+            if (dna1.isEmpty() && !dna2.isEmpty()) {
+                answer = GAP + mminDistance(dna1, dna2.getRest());
+                minDistanceMemo.put(probKey,answer);
+                return answer;
+            }
+            if (dna2.isEmpty() && !dna1.isEmpty()) {
+                answer = GAP + mminDistance(dna2, dna1.getRest());
+                minDistanceMemo.put(probKey,answer);
+                return answer;
+            }
+            if (dna1.getFirst().equals(dna2.getFirst())) {
+                answer =  mminDistance(dna1.getRest(), dna2.getRest());
+                minDistanceMemo.put(probKey,answer);
+                return answer;
+            }
+            int acceptMismatch = MISMATCH + mminDistance(dna1.getRest(), dna2.getRest());
+            int gapADN1 = GAP + mminDistance(dna1, dna2.getRest());
+            int gapADN2 = GAP + mminDistance(dna1.getRest(), dna2);
+
+            answer = Math.min(Math.min(gapADN1, gapADN2), acceptMismatch);
+            minDistanceMemo.put(probKey,answer);
+            return answer;
+
+        }catch (EmptyListE e) {
+            return 0;
+        }
+
     }
 
     // -----------------------------------------------------------------------------
@@ -214,13 +255,53 @@ class DP {
      *     second call. Choose the longer of the two results
      */
     static List<Character> lcs (List<Character> cs1, List<Character> cs2) {
-        return null; // TODO
+        try {
+            if (cs1.getFirst().equals(cs2.getFirst())) {
+                return new Node<>(cs1.getFirst(), lcs(cs1.getRest(), cs2.getRest()));
+            }
+            else {
+                List<Character> pos1 = lcs(cs1, cs2.getRest());
+                List<Character> pos2 = lcs(cs1.getRest(), cs2);
+
+                if (pos1.length() > pos2.length()) return pos1;
+                else return pos2;
+            }
+        } catch (EmptyListE e) {
+            return new Empty<>();
+        }
+
     }
 
     static final Map<Pair<List<Character>,List<Character>>,List<Character>> lcsMemo = new HashMap<>();
 
     static List<Character> mlcs (List<Character> cs1, List<Character> cs2) {
-        return null; // TODO
+        Pair<List<Character>,List<Character>> probKey = new Pair(cs1, cs2);
+        if (lcsMemo.containsKey(probKey)) return lcsMemo.get(probKey);
+
+        List<Character> answer;
+
+        try {
+            if (cs1.getFirst().equals(cs2.getFirst())) {
+                answer = new Node<>(cs1.getFirst(), mlcs(cs1.getRest(), cs2.getRest()));
+            }
+            else {
+                List<Character> pos1 = mlcs(cs1, cs2.getRest());
+                List<Character> pos2 = mlcs(cs1.getRest(), cs2);
+
+                if (pos1.length() > pos2.length()) {
+                    answer = pos1;
+                    lcsMemo.put(probKey,answer);
+                    return answer;
+                }
+                else answer = pos2;
+            }
+            lcsMemo.put(probKey,answer);
+            return answer;
+        } catch (EmptyListE e) {
+            return new Empty<>();
+        }
+
+
     }
 
 }
