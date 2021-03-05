@@ -65,4 +65,28 @@ public class DPTest {
         List<DP.BASE> dna2 = List.MakeList(g, 450);
         assertEquals(337, DP.buminDistance(dna1, dna2));
     }
+
+
+    @Test
+    public void myBupartitionCorrectness() {
+        List<Integer> ns = new Node<>(6, new Node<>(4,
+                new Node<>(3, new Node<>(5, new Empty<>()))));
+        assertFalse(DP.bupartition(ns, 2));
+
+        assertTrue(DP.bupartition(ns, 11));
+
+        assertTrue(DP.bupartition(ns, 6));
+
+
+    }
+
+
+    @Test
+    public void myBuminDistance() {
+        List<DP.BASE> dna1 =
+                new Node<>(DP.BASE.G, new Node<>(DP.BASE.T, new Node<>(DP.BASE.C, new Node<>(DP.BASE.A, new Empty<>()))));
+        List<DP.BASE> dna2 =
+                new Node<>(DP.BASE.A, new Node<>(DP.BASE.T, new Node<>(DP.BASE.C, new Empty<>())));
+        assertEquals(3, DP.buminDistance(dna1, dna2));
+    }
 }

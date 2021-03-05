@@ -40,8 +40,30 @@ public class DP {
     // hint: use the toArray() method above to convert objects of our List class to an ArrayList
     // do bottom-up approach to partition
     static boolean bupartition (List<Integer> s, int sum) {
-        // TODO
-        return false;
+       ArrayList<Integer> origList = toArray(s);
+       int len = origList.size() + 1;
+
+       boolean[][] cache= new boolean[sum + 1][len];
+
+       for (int i = 0; i < sum + 1; i++) cache[i][0] = false;
+       for (int j = 0; j < len; j++) cache[0][j] = true;
+
+
+
+        for (int i = 1; i < sum + 1; i ++) {
+            for (int j = 1; j < len; j++) {
+
+                int sumMinus = i - origList.get(j-1);
+                int rest = j - 1;
+
+                if (sumMinus < 0) cache[i][j] = cache[i][rest];
+                else cache[i][j] = cache[i][rest] || cache[sumMinus][rest];
+
+            }
+        }
+
+
+        return cache[sum][len-1];
     }
 
 
@@ -87,7 +109,25 @@ public class DP {
 
     // feel free to refer to Kev's video (I embedded it again to this week's lab post on Canvas)
     static int buminDistance (List<BASE> dna1, List<BASE> dna2) {
-        // TODO
-        return 0;
+        ArrayList<BASE> dn1 = toArray(dna1);
+        ArrayList<BASE> dn2 = toArray(dna2);
+
+        int[][] cache = new int[dna1.length() + 1][dna2.length() + 1];
+
+        for (int i = 0; i <= dna1.length(); i++) cache[i][0] = i * 2;
+        for (int j = 0; j <= dna2.length(); j++) cache[0][j] = j * 2;
+
+        for (int i = 1; i <= dna1.length(); i++) {
+            for (int j = 1; j <= dna2.length(); j++) {
+                int current = dn1.get(i - 1) == dn2.get(j - 1) ? 0 : 1;
+                int d1 = current + cache[i-1][j-1];
+                int d2 = 2 + cache[i-1][j];
+                int d3 = 2 + cache[i][j-1];
+                cache[i][j] = Math.min(d1, Math.min(d2, d3));
+            }
+        }
+
+        //System.out.println(Arrays.deepToString(cache).replace("], ", "]\n"));
+        return cache[dna1.length()][dna2.length()];
     }
 }
