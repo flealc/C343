@@ -128,8 +128,45 @@ public class SeamCarving {
     final Map<Position, Pair<List<Position>, Integer>> hash = new HashMap<>();
 
     Pair<List<Position>, Integer> findSeam(int h, int w) {
-        return null; // TODO
+
+        Position probKey = new Position(h, w);
+        if (hash.containsKey(probKey)) return hash.get(probKey);
+
+        Pair<List<Position>, Integer> answer;
+
+        //int currPosEnergy = computeEnergy(h, w);
+
+        if (h + 1 == getHeight()) {
+            answer = new Pair(new Node(new Position(h, w), new Empty()), computeEnergy(h,w));
+
+        } else {
+
+            ArrayList<Pair<List<Position>, Integer>> neighbors = new ArrayList<>();
+
+            for (Position p : getBelowNeighbors(h, w)) {
+                neighbors.add(findSeam(p.getFirst(), p.getSecond()));
+            }
+
+            Pair<List<Position>, Integer> best = neighbors.get(0);
+            for (Pair<List<Position>, Integer> neighbor : neighbors) {
+                if (neighbor.getSecond() < best.getSecond()) {
+                    best = neighbor;
+
+                }
+            }
+            answer = new Pair(new Node(new Position(h, w), best.getFirst()), best.getSecond() + computeEnergy(h, w));
+
+        }
+        hash.put(probKey, answer);
+
+        return answer;
+
     }
+
+
+
+
+
 
     // Call findSeam for all position in the first row (h=0)
     // andd returns the best (the one with the lowest
@@ -141,8 +178,23 @@ public class SeamCarving {
     // hashtable
 
     Pair<List<Position>, Integer> bestSeam() {
-        return null; // TODO
+        hash.clear();
+        int bestEnergy = findSeam(0,0).getSecond();
+        Position bestPosition = new Position(0,0);
+
+        for (int i = 0; i < getWidth(); i++) {
+            if (findSeam(0,i).getSecond() < bestEnergy){
+                bestEnergy = findSeam(0,i).getSecond();
+                bestPosition = new Position(0, i);
+
+           }
+        }
+        return findSeam(bestPosition.getFirst(), bestPosition.getSecond());
     }
+
+
+
+
 
     // Putting it all together; find best seam and copy pixels
     // without that seam
@@ -152,8 +204,73 @@ public class SeamCarving {
     // the ones in the seam
 
     void cutSeam() {
-      // TODO
+        int[] newPixels = new int[getHeight() * (getWidth() - 1)];
+
+        List<Position> Positions = bestSeam().getFirst();
+        ArrayList<Integer> toCut = new ArrayList();
+
+/*
+        for (int k = 0; k < Positions.length(); k ++) {
+            try {
+                toCut.add(Positions.getFirst().getFirst() * width + Positions.getFirst().getSecond());
+                Positions = Positions.getRest();
+            } catch (EmptyListE e ) { }
+         }
+
+*/
+        try {
+         for (int i = 0; i < height; i++) {
+             int newJ = 0;
+             for (int j = 0; j < width; j++) {
+                 if (Positions.getFirst().getFirst().equals(i) && Positions.getFirst().getSecond().equals(j)) {
+                     newJ--;
+                     Positions = Positions.getRest();
+                 } else {
+                     newPixels[newJ + (i * (width-1))] = pixels[j + (i  * width)];
+                     newJ++;
+                 }
+             }
+        }
+        } catch (EmptyListE e) {}
+
+
+/*
+int counter = 0;
+         for (int i = 0; i < height * (width-1); i++) {
+
+            if (toCut.contains(i)) {
+                counter++;
+
+            } else if (!toCut.contains(i)){
+
+                newPixels[i-counter] = pixels[i];
+
+            }
+
+         }
+
+
+        int counter = 0;
+         for (int i = 0; i < height * (width-1); i++) {
+
+            if (toCut.contains(i)) {
+                counter++;
+
+            } else if (!toCut.contains(i)){
+
+                newPixels[i-counter] = pixels[i];
+
+            }
+
+         }
+*/
+        System.out.println();
+         pixels = newPixels;
+         width = width - 1;
     }
-}
 
 
+
+
+
+    }
