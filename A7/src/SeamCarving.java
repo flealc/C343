@@ -204,73 +204,37 @@ public class SeamCarving {
     // the ones in the seam
 
     void cutSeam() {
-        int[] newPixels = new int[getHeight() * (getWidth() - 1)];
+
+        int[] newPixels = new int[height * (width - 1)];
+
 
         List<Position> Positions = bestSeam().getFirst();
-        ArrayList<Integer> toCut = new ArrayList();
 
-/*
-        for (int k = 0; k < Positions.length(); k ++) {
-            try {
-                toCut.add(Positions.getFirst().getFirst() * width + Positions.getFirst().getSecond());
-                Positions = Positions.getRest();
-            } catch (EmptyListE e ) { }
-         }
 
-*/
         try {
+
          for (int i = 0; i < height; i++) {
              int newJ = 0;
              for (int j = 0; j < width; j++) {
-                 if (Positions.getFirst().getFirst().equals(i) && Positions.getFirst().getSecond().equals(j)) {
-                     newJ--;
-                     Positions = Positions.getRest();
-                 } else {
-                     newPixels[newJ + (i * (width-1))] = pixels[j + (i  * width)];
-                     newJ++;
+
+                     if ((!Positions.isEmpty()) && Positions.getFirst().getFirst().equals(i) && Positions.getFirst().getSecond().equals(j)) {
+                         newJ--;
+                         Positions = Positions.getRest();
+
+
+                     } else {
+                         newPixels[(i * (width-1)) + newJ] = pixels[j + (i * width)];
+
+                     }
+                 newJ++;
                  }
-             }
+
         }
-        } catch (EmptyListE e) {}
+        } catch (EmptyListE e) {throw new Error("better pay attention");}
 
-
-/*
-int counter = 0;
-         for (int i = 0; i < height * (width-1); i++) {
-
-            if (toCut.contains(i)) {
-                counter++;
-
-            } else if (!toCut.contains(i)){
-
-                newPixels[i-counter] = pixels[i];
-
-            }
-
-         }
-
-
-        int counter = 0;
-         for (int i = 0; i < height * (width-1); i++) {
-
-            if (toCut.contains(i)) {
-                counter++;
-
-            } else if (!toCut.contains(i)){
-
-                newPixels[i-counter] = pixels[i];
-
-            }
-
-         }
-*/
-        System.out.println();
          pixels = newPixels;
+
          width = width - 1;
     }
-
-
-
-
 
     }

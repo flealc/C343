@@ -368,13 +368,16 @@ public class SeamCarvingTest {
     @Test
     public void myCut () throws IOException {
         SeamCarving sc = new SeamCarving();
-        sc.readImage("try.png");
-        int bound = sc.getWidth() / 2;
+        sc.readImage("small-line.jpg");
+        //System.out.println(sc.getWidth());
+        int bound = 2;
+
         for (int i = 0; i < bound; i++) {
             System.out.printf("%d of %d%n", i + 1, bound);
             sc.cutSeam();
         }
-        sc.writeImage("try-cut.jpg");
+        //System.out.println(sc.getWidth());
+        sc.writeImage("smlcut.jpg");
 
     }
 
@@ -390,13 +393,13 @@ public class SeamCarvingTest {
     @Test
     public void mycutBigSunThird () throws IOException {
         SeamCarving sc = new SeamCarving();
-        sc.readImage("winter-sun.jpg");
-        int bound = 5;
+        sc.readImage("balloon-sky.jpg");
+        int bound = 50;
         for (int i=0; i<bound; i++) {
             System.out.printf("%d of %d%n", i+1, bound);
             sc.cutSeam();
         }
-        sc.writeImage("winter-sun-cut.jpg");
+        sc.writeImage("balloon-sky-cut.jpg");
     }
 
     }
