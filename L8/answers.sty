@@ -1,0 +1,155 @@
+
+%% This is ANSWERS.STY
+%% Copyright (C) 1992 by Mike Piff.
+%% All rights reserved.
+%% Copying of this file is authorized only if
+%% you make absolutely no changes to your copy.
+%%
+%%
+%%Name:           ANSWERS.STY
+%%Description:    A style option to LaTeX that allows answers to problems to
+%%                be included adjacent to the problems in the source file.
+%%                The answers are written out to a subsidiary file, ready to
+%%                be included later in the document.
+%%                An example is appended to the end of the style file.
+%%Keywords:       answers,solutions,problems,exercises
+%%Author:         "Mike Piff" <M.Piff@sheffield.ac.uk>
+%%Latest version: 10/27/92 02:43pm
+%%Supported:      Yes
+
+
+
+%% Usage
+%% \documentstyle[answers]{article} %% in LaTeX
+
+
+
+\let\@@it=\it  %% save meaning of \it
+\def\RestoreIt{\global\let\it\@@it}
+\def\Noit{\global\let\it\RestoreIt} %%let \it revert to old meaning
+%% this is useful in, for instance,
+%% \newtheorem{exercise}{Exercise\Noit}
+%% \newtheorem{Solution}{Solution\Noit}
+%% which gives an upright rather than italic style
+
+\newwrite\@ns
+
+{\catcode`\<=1 \catcode`\>=2 \catcode`\{=12 \catcode`\}=12
+   \gdef\LBRACE<{>\gdef\RBRACE<}>
+   \catcode`\|=0 |catcode`|\=12 |gdef|END<\end>>
+
+%% This defines the conventions
+%% #1 = \Solution, say
+%% #2 = environment name to use in solution file
+%% #3 = environment terminating solution in problems file
+%%      The line that ends the solution must consist only of \end{#3},
+%%      with no leading spaces.
+\def\SolutionMarker#1#2#3{%
+   \let#1=\ExSolution
+   \def\solutionmark{#2}%
+   \def\exercisemark{#3}%
+   \edef\DefineEnd{\gdef\noexpand\@ndexercise{\END\LBRACE#3\RBRACE}}%
+   \DefineEnd
+}
+\newif\ifhint
+\def\HintMarker#1{\def#1{\global\hinttrue\ExSolution}}
+
+\def\newsolution#1#2{%
+   \expandafter\def\csname#1\endcsname##1##2{%
+      \trivlist\item[\hskip\itemsep{\bf#2 ##1%
+         \def\temp{##2}%
+         \ifx\temp\empty\else\ (##2)\fi}]}%
+   \expandafter\def\csname end#1\endcsname{\endtrivlist}%
+}
+
+%%Write directly to solution file
+\def\Write#1{{\let\protect\string \immediate\write\@ns{#1}}}
+
+\outer\def\Opensolutionfile#1{% #1=filename
+   \immediate\openout\@ns=#1
+   \Write{\string\BeginSolutions}%
+   \OpenHook
+}
+
+\def\Closesolutionfile{%
+   \Write{\string\EndSolutions}%
+   \immediate\closeout\@ns
+   \CloseHook
+}
+%%Note that \OpenHook and \CloseHook may be redefined to take parameters, in
+%%which case, say
+%%\OpenSolutionFile{FileName}{Param1}{Param2}...
+%%\OpenHook might also write parameters to \BeginSolutions to the \@ns file
+
+%%This is similar to The TeXbook. However, a solution is allowed to contain
+%%blank lines here.
+\def\PreSolutionSpacer{\Write{}}
+\def\ExSolution{\PreSolutionSpacer
+   \Write{\string\begin{\solutionmark}%
+      {\csname the\exercisemark\endcsname}{\ifhint Hint\fi}}%
+   \global\hintfalse
+   \c@pytoendEx}
+\def\c@pytoendEx{\begingroup\s@tupcopy\c@pyans}
+\def\s@tupcopy{\def\do##1{\catcode`##1=12}\dospecials%
+      \catcode`\|=12 \makeatother\obeylines\let\n@xt\empty}
+
+\def\@Ndgroup{\endgroup\expandafter\end\expandafter{\exercisemark}%
+   \PostSolutionSpacer}
+\def\PostSolutionSpacer{}
+
+{\obeylines \gdef\c@pyans#1
+   {\def\n@xt{#1}%
+   \ifx\n@xt\@ndexercise\Write{\string\end{\solutionmark}}\let\n@xt=\@Ndgroup%
+   \else\Write{\n@xt}\let\n@xt=\c@pyans\fi\n@xt}}
+
+%% Default values
+\def\OpenHook{}
+\def\CloseHook{}
+\def\BeginSolutions{}
+\def\EndSolutions{}
+\SolutionMarker\Solution{solution}{exercise}
+
+\endinput
+
+
+
+
+%% Example of usage
+\documentstyle[12pt,answers]{article}
+
+\newtheorem{exercise}{Exercise\Noit}[section]
+\newsolution{solution}{Solution}
+
+\SolutionMarker\Solution{solution}{exercise}
+\HintMarker\Hint
+
+%%\renewcommand{\OpenHook}[1]{\Write{\protect\section{#1}}}
+\renewcommand{\OpenHook}{\Write{\protect\section*{Solutions to Section \thesection}}}
+\renewcommand{\CloseHook}{}
+
+\renewcommand{\BeginSolutions}{\clearpage\small}
+\renewcommand{\EndSolutions}{\clearpage\normalsize}
+
+\begin{document}
+\section{Problems}
+\Opensolutionfile{testsol}%%{Solutions}
+\begin{exercise}
+   Question
+\Solution Answer
+\end{exercise}
+\begin{exercise}
+   Another Question
+\Hint A Hint
+\end{exercise}
+\Closesolutionfile
+\input{testsol}
+\end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Dr M J Piff                      %%  e-mail:
+%% Department of Pure Mathematics   %%
+%% University of Sheffield          %%  M.Piff@sheffield.ac.uk
+%% Hicks Building                   %%
+%% Hounsfield Road                  %%  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% SHEFFIELD S3 7RH                 %%  Telephone: SHEFFIELD (0742) 768555
+%% England                          %%             Ext. 4431
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
