@@ -1,0 +1,103 @@
+\documentclass[answers,12pt]{exam}
+\oddsidemargin 0pt
+\evensidemargin 0 pt
+\topmargin -.4in
+\headsep 20pt
+\footskip 20pt
+\textheight 8.8in
+\textwidth 6.25in
+\input{macros}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage{color}
+\usepackage{answers}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{enumitem}
+\usepackage{amsthm}
+%\usepackage{booktabs}
+\usepackage{graphicx}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+\shadedsolutions
+\begin{document}
+	\begin{flushright}Your name here\end{flushright}
+		\section*{Lab 8: Proofs by Numerical Induction}
+Note to reader: these aren't exactly the most \textbf{wordy} proofs - you should make yours wordier :).
+\begin{questions}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%Example 1%%%
+\question[some]
+For all natural numbers $n \geq 2$, $3^{n} > n^{2}$.
+
+\begin{solution} \\
+\textit{Claim.} For all natural numbers $n \geq 2, 3^n > n^2$ \\
+		\begin{proof}(Induct on $n$.)\\
+			Base Case ($n$ = 2):\\
+			\tab $3^2 = 9 > 4 = 2^2$\\
+			Induction Step:\\
+			\tab Choose a $k \in \mathbb{N}$ with $k \geq 2$, and assume $3^k > k^2$\\
+			\tab \tab \tab $3^{k+1} = 3 \cdot 3^k$\\
+			\tab \tab \tab $> 3 \cdot k^2$ \hfill (by IH)\\
+			\tab \tab \tab $= k^2 + k^2 + k^2$\\
+			\tab \tab \tab $= k^2 + k \cdot k + k \cdot k$\\
+			\tab \tab \tab $\geq k^2 + 2k + 2 \cdot 2$\hfill (since $k \geq 2$)\\
+			\tab \tab \tab $= k^2 + 2k + 4$\\
+			\tab \tab \tab $> k^2 + 2k + 1$\\
+			\tab \tab \tab $= (k+1)^2$\\
+			\tab Therefore $3^{k+1} > (k+1)^2$
+		\end{proof}
+\end{solution}
+  
+%%%Example 2%%%
+\question[some]
+For all natural numbers $n \geq 1$, $\displaystyle\sum_{i-1}^{n} 2^{i-1} = 2^{n} - 1$\\
+
+\begin{solution} \\
+	\textit{Claim.} For all natural numbers $n \geq 1$, $\displaystyle\sum_{i-1}^{n} 2^{i-1} = 2^{n} - 1$\\
+		\begin{proof}(Induct on $n$.)\\
+			Base Case ($n$ = 1):\\
+			\tab $\displaystyle\sum_{i=1}^{1} 2^{1-1} = 1$, and $2^1 - 1 = 1$.\\
+			\tab So therefore $\displaystyle\sum_{i=1}^{1} 2^{i-1} = 2^1 - 1$\\
+			Inductive Step:\\
+			\tab Assume that for some positive integer $k$, $\displaystyle\sum_{i=1}^{k} 2^{i-1} = 2^k - 1$\\
+			\tab \tab \tab $\displaystyle\sum_{i=1}^{k+1} 2^{i-1} = \displaystyle\sum_{i=1}^{k} 2^{i-1} + 2^{k}$\\
+			\tab \tab \tab $=2^k -1 + 2^k$\hfill (by IH)\\
+			\tab \tab \tab $=2(2^k)-1$\\
+			\tab \tab \tab $=2^{k+1}-1$\\
+			\tab So $\displaystyle\sum_{i=1}^{k+1} 2^{i-1} = 2^{k+1} -1$
+		\end{proof}
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%TODO%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\question[some]
+For all natural numbers, $n \geq 7, 3^{n} < n!$.
+		
+
+\begin{solution}
+	proof goes here
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\question[some] 
+	For all natural numbers $n \geq 1, \displaystyle\sum_{i=1}^{n} 2i = n(n+1)$.
+
+
+\begin{solution}
+	proof goes here
+\end{solution}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\question[some]
+	For all $n \in \mathbb{N}, n^{2} - 3n$ is even.
+
+
+\begin{solution}
+	this is a proof
+\end{solution}
+ 
+%%%%%%%%%%%%%%%%%%%%%
+\end{questions}
+\end{document}
+
