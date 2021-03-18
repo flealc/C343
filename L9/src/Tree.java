@@ -20,7 +20,7 @@ class Empty extends Tree {
 
     Tree insert (int v) {
         // TODO
-        return new Node(v, this, this);
+        return null;
     }
 
     public TreePrinter.PrintableNode getLeft() { return null; }
@@ -51,11 +51,7 @@ class Node extends Tree {
 
     Tree insert (int v) {
         // TODO
-        if (v <= this.value) {
-            return new Node(this.value, leftTree.insert(v), rightTree);
-        } else {
-            return new Node(this.value, leftTree, rightTree.insert(v));
-        }
+        return null;
     }
 
     public TreePrinter.PrintableNode getLeft() {
