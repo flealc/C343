@@ -19,8 +19,8 @@ class Empty extends Tree {
     Tree getRightTree () throws EmptyE { throw new EmptyE(); }
 
     Tree insert (int v) {
-        // TODO
-        return null;
+
+        return new Node(v, this, this);
     }
 
     public TreePrinter.PrintableNode getLeft() { return null; }
@@ -50,13 +50,20 @@ class Node extends Tree {
     Tree getRightTree () { return rightTree; }
 
     Tree insert (int v) {
-        // TODO
-        return null;
+
+        if (v >= this.value) {
+            return new Node(this.value, leftTree, rightTree.insert(v));
+
+        } else return new Node(this.value, leftTree.insert(v), rightTree);
+
     }
 
     public TreePrinter.PrintableNode getLeft() {
         if (leftTree.isEmpty()) return null;
         else return leftTree;
+
+
+
     }
     public TreePrinter.PrintableNode getRight() {
         if (rightTree.isEmpty()) return null;
