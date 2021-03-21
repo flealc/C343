@@ -24,9 +24,9 @@ class TreeTest {
         assertEquals(4, t4.height());
         assertEquals(2, t4.numberMaxPaths());
         assertEquals(16, t5.numberMaxPaths());
-        assertEquals(6, t4.diameter());
-        assertEquals(7, t5.diameter());
-        assertEquals(7,t6.diameter());
+        assertEquals(7, t4.diameter());
+        assertEquals(8, t5.diameter());
+        assertEquals(8,t6.diameter());
         assertEquals(215, t4.reduce(0, (a,b,c) -> a+b+c));
         assertEquals(170, t4.maxSum());
     }

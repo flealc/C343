@@ -11,6 +11,23 @@ import java.util.function.Function;
 public class SeamCarving {
     private int[] pixels;
     private int type, height, width;
+    /**
+
+       pic 3x5
+ [ (0,0), (0,1), (0,2), (0,3), (0,4), (1,0), (1,1), (1,2), (1,3), (1,4), (2,0), (2,1), (2,2), (2,3), (2,4) ]
+height * width = 15
+array[0] -- array[4] first row
+array[5] -- array[9] second row
+array[10] -- array[14] third row
+
+seam is (0,1), (1,2), (2,2) 
+
+after cut 
+
+ [ (0,0), (0,2), (0,3), (0,4), (1,0), (1,1), (1,3), (1,4), (2,0), (2,1), (2,3), (2,4) ]
+
+size 12, 3x4
+     */
 
     // Field getters
 
@@ -128,6 +145,7 @@ public class SeamCarving {
     final Map<Position, Pair<List<Position>, Integer>> hash = new HashMap<>();
 
     Pair<List<Position>, Integer> findSeam(int h, int w) {
+<<<<<<< HEAD
 
         Position probKey = new Position(h, w);
         if (hash.containsKey(probKey)) return hash.get(probKey);
@@ -161,6 +179,12 @@ public class SeamCarving {
 
         return answer;
 
+=======
+        return null; // TODO
+	/*
+	  has three positions under it: bottom-left, bottom, bottom-right
+	 */
+>>>>>>> a566a85d44f22d2abf326f8dfba730edcf0937e5
     }
 
 
@@ -178,6 +202,7 @@ public class SeamCarving {
     // hashtable
 
     Pair<List<Position>, Integer> bestSeam() {
+<<<<<<< HEAD
         hash.clear();
         int bestEnergy = findSeam(0,0).getSecond();
         Position bestPosition = new Position(0,0);
@@ -190,6 +215,16 @@ public class SeamCarving {
            }
         }
         return findSeam(bestPosition.getFirst(), bestPosition.getSecond());
+=======
+	// init hashtable (clear it)
+	// findSeam(0,0)
+	// findSeam(0,1)
+	// findSeam(0,2)
+	// findSeam(0,3)
+	// ...
+	//	return min
+        return null; // TODO
+>>>>>>> a566a85d44f22d2abf326f8dfba730edcf0937e5
     }
 
 
