@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 class EmptyE extends Exception {}
 
 abstract class Tree implements TreePrinter.PrintableNode {
@@ -50,6 +53,7 @@ class Node extends Tree {
     Tree getRightTree () { return rightTree; }
 
     Tree insert (int v) {
+       
 
         if (v >= this.value) {
             return new Node(this.value, leftTree, rightTree.insert(v));

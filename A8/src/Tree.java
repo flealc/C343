@@ -1,7 +1,4 @@
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Function;
 
 class EmptyE extends Exception {}
@@ -104,16 +101,49 @@ abstract class Tree implements TreePrinter.PrintableNode {
      * The first element in the list is the root, then its two children
      * from left to right, then their four children from left to right, etc.
      */
-    static ArrayList<Integer> BFS (Tree t) {
-        return null; // TODO
+    static ArrayList<Integer> BFS (Tree t) { // TODO
+
+        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<Tree> treeQ = new ArrayList<>();
+        ArrayList<Tree> subtreeQ = new ArrayList<>();
+        ArrayList<Integer> currentLevel = new ArrayList<>();
+
+        treeQ.add(t);
+
+
+
+
+        while (!treeQ.isEmpty()) {
+            try {
+                Tree ct = treeQ.get(0) ;
+                result.add(ct.getValue());
+                subtreeQ.add(ct.getLeftTree());
+                subtreeQ.add(ct.getRightTree());
+                subtreeQ
+
+
+            }
+            catch (EmptyE ignored) {}
+        }
+*/
+        return result;
+        //return result;
     }
 
     /**
      * Same as BFS except that the values at each level are collected
      * in their own list
      */
-    static ArrayList<ArrayList<Integer>> BFSLevel (Tree t) {
-        return null; // TODO
+    static ArrayList<ArrayList<Integer>> BFSLevel (Tree t) { // TODO
+        ArrayList<Integer> BFSLList = new ArrayList<>();
+        try {
+
+            BFSLList.add(t.getLeftTree().getValue());
+            BFSLList.add(t.getRightTree().getValue());
+
+
+        } catch (EmptyE e) {return new ArrayList<>();}
+        return null;
     }
 
     static Tree fromArray (int[] vs) {
@@ -134,35 +164,34 @@ class Empty extends Tree {
     Tree getRightTree () throws EmptyE { throw new EmptyE(); }
 
     int height () {
-        return 0; // TODO
+        return 0;
     }
 
     Tree mirror() {
-        return null; // TODO
+        return this;
     }
 
     Tree insert (int v) {
-        return null; // TODO
+        return new Node(v, this, this);
     }
 
     int numberMaxPaths() {
-        return 0; // TODO
+        return 1;
     }
 
-    int maxSum () {
-        return 0; // TODO
+    int maxSum () { return 0;
     }
 
     int diameter () {
-        return 0; // TODO
+        return 1;
     }
 
     Tree map (Function<Integer,Integer> f) {
-        return null; // TODO
+        return this;
     }
 
     int reduce (int base, TriFunction<Integer,Integer,Integer,Integer> f) {
-        return 0; // TODO
+        return 0;
     }
 
     public TreePrinter.PrintableNode getLeft() { return null; }
@@ -194,35 +223,52 @@ class Node extends Tree {
     Tree getRightTree () { return rightTree; }
 
     int height () {
-        return 0; // TODO
+        return height;
     }
 
     Tree mirror() {
-        return null; // TODO
+        Tree mirroredTree = new Node(getValue(), getRightTree().mirror(), getLeftTree().mirror());
+        return mirroredTree;
     }
 
     Tree insert (int v) {
-        return null; // TODO
-    }
+
+        if (leftTree.isEmpty()) {
+            return new Node(value, rightTree, new Node(v, new Empty(), new Empty()));
+        } else return new Node(value, rightTree, leftTree.insert(v));
+        }
+
 
     int numberMaxPaths() {
-        return 0; // TODO
+       if (rightTree.height() == leftTree.height()) {
+           return leftTree.numberMaxPaths() + rightTree.numberMaxPaths();
+       }
+        if (leftTree.height() < rightTree.height()) {
+            return rightTree.numberMaxPaths();
+        } else return leftTree.numberMaxPaths();
     }
-
     int maxSum () {
-        return 0; // TODO
-    }
+
+        if (height == 1) {
+            return value;
+        } else return value + Math.max(leftTree.maxSum(), rightTree.maxSum());
+         }
 
     int diameter () {
-        return 0; // TODO
+
+        if (leftTree.height() == rightTree.height()) {
+            return leftTree.height() + rightTree.height() + 2;
+        } else return Math.max(Math.max(leftTree.diameter(), rightTree.diameter()), (leftTree.height() + rightTree.height() + 2));
+
     }
 
     Tree map (Function<Integer,Integer> f) {
-        return null; // TODO
+        return new Node(f.apply(value), leftTree.map(f), rightTree.map(f));
     }
 
     int reduce (int base, TriFunction<Integer,Integer,Integer,Integer> f) {
-        return 0; // TODO
+
+        return f.apply(value, rightTree.reduce(base,f), leftTree.reduce(base,f));
     }
 
     public TreePrinter.PrintableNode getLeft() {
