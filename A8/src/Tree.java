@@ -129,37 +129,29 @@ abstract class Tree implements TreePrinter.PrintableNode {
      */
     static ArrayList<ArrayList<Integer>> BFSLevel (Tree t) { // TODO
         ArrayList<ArrayList<Integer>> result = new ArrayList();
-       // try{
-       //     result.add(new ArrayList<Integer>(t.getValue()));
-        //} catch (EmptyE e) {return new ArrayList<ArrayList<Integer>>();}
         ArrayList<Integer> currentLevel = new ArrayList();
         Queue<Tree> treeQ = new LinkedList<>();
         Queue<Tree> subtreeQ = new LinkedList<>();
 
         treeQ.add(t);
-
-            while (!treeQ.isEmpty()) {
-                try {
-                    currentLevel.clear();
-                    Tree ct = treeQ.remove();
-                    currentLevel.add(ct.getValue());
-                    subtreeQ.add(ct.getLeftTree());
-                    subtreeQ.add(ct.getRightTree());
-                    result.add(currentLevel);
-                    while (!subtreeQ.isEmpty()) {
-                        currentLevel.clear();
-                        Tree tt = subtreeQ.remove();
-                        currentLevel.add(tt.getValue());
-                        treeQ.add(tt.getLeftTree());
-                        treeQ.add(tt.getRightTree());
-                        result.add(currentLevel);
-                    }
-                } catch (EmptyE ignored) { }
-            }
-
-            result.add(currentLevel);
-        return result;
+    int i = t.height();
+    while (i != 0){
+        while (!treeQ.isEmpty()) {
+            try {
+                Tree ct = treeQ.remove();
+                currentLevel.add(ct.getValue());
+                subtreeQ.add(ct.getLeftTree());
+                subtreeQ.add(ct.getRightTree());
+            } catch (EmptyE ignored) {}
         }
+        result.add(currentLevel);
+        currentLevel = new ArrayList<>();
+        treeQ.addAll(subtreeQ);
+        subtreeQ= new LinkedList<>();
+        i--;
+    }
+    return result;
+    }
 
 
 

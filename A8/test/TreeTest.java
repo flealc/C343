@@ -58,8 +58,8 @@ class TreeTest {
         t7 = t6.insert(7);
         t8 = t7.insert(8);
         t9 = new Node(1, new Node (2, new Empty(), new Empty()),new Node(3, new Node (4, new Empty(), new Empty()), new Node(5, new Empty(), new Empty())));
-        TreePrinter.print(t3);
+        TreePrinter.print(t9);
       // System.out.println(t9.reduce(1, (a,b,c) -> a+b+c));
-        System.out.println(Tree.BFSLevel(t3));
+        System.out.println(Tree.BFSLevel(t9));
     }
 }
