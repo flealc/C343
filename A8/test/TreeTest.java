@@ -48,7 +48,7 @@ class TreeTest {
     }
     @Test
     public void insertTest() throws EmptyE{
-        Tree t1, t2, t3, t4, t5, t6, t7, t8;
+        Tree t1, t2, t3, t4, t5, t6, t7, t8, t9;
         t1 = new Node(1, new Empty(), new Empty());
         t2 = t1.insert(2);
         t3 = t2.insert(3);
@@ -57,8 +57,9 @@ class TreeTest {
         t6 = t5.insert(6);
         t7 = t6.insert(7);
         t8 = t7.insert(8);
-       // TreePrinter.print(t3);
-
-        System.out.println(Tree.BFS(t5));
+        t9 = new Node(1, new Node (2, new Empty(), new Empty()),new Node(3, new Node (4, new Empty(), new Empty()), new Node(5, new Empty(), new Empty())));
+        TreePrinter.print(t3);
+      // System.out.println(t9.reduce(1, (a,b,c) -> a+b+c));
+        System.out.println(Tree.BFSLevel(t3));
     }
 }

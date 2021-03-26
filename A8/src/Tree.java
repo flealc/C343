@@ -104,30 +104,23 @@ abstract class Tree implements TreePrinter.PrintableNode {
     static ArrayList<Integer> BFS (Tree t) { // TODO
 
         ArrayList<Integer> result = new ArrayList<>();
-        ArrayList<Tree> treeQ = new ArrayList<>();
-        ArrayList<Tree> subtreeQ = new ArrayList<>();
-        ArrayList<Integer> currentLevel = new ArrayList<>();
 
-        treeQ.add(t);
+        Queue<Tree> queue = new LinkedList<>();
+        queue.add(t);
 
-
-
-
-        while (!treeQ.isEmpty()) {
+        while (!queue.isEmpty()) {
             try {
-                Tree ct = treeQ.get(0) ;
+                Tree ct = queue.remove();
                 result.add(ct.getValue());
-                subtreeQ.add(ct.getLeftTree());
-                subtreeQ.add(ct.getRightTree());
-                subtreeQ
-
-
+                queue.add(ct.getLeftTree());
+                queue.add(ct.getRightTree());
             }
             catch (EmptyE ignored) {}
         }
-*/
+
         return result;
-        //return result;
+
+
     }
 
     /**
@@ -135,16 +128,42 @@ abstract class Tree implements TreePrinter.PrintableNode {
      * in their own list
      */
     static ArrayList<ArrayList<Integer>> BFSLevel (Tree t) { // TODO
-        ArrayList<Integer> BFSLList = new ArrayList<>();
-        try {
+        ArrayList<ArrayList<Integer>> result = new ArrayList();
+       // try{
+       //     result.add(new ArrayList<Integer>(t.getValue()));
+        //} catch (EmptyE e) {return new ArrayList<ArrayList<Integer>>();}
+        ArrayList<Integer> currentLevel = new ArrayList();
+        Queue<Tree> treeQ = new LinkedList<>();
+        Queue<Tree> subtreeQ = new LinkedList<>();
 
-            BFSLList.add(t.getLeftTree().getValue());
-            BFSLList.add(t.getRightTree().getValue());
+        treeQ.add(t);
+
+            while (!treeQ.isEmpty()) {
+                try {
+                    currentLevel.clear();
+                    Tree ct = treeQ.remove();
+                    currentLevel.add(ct.getValue());
+                    subtreeQ.add(ct.getLeftTree());
+                    subtreeQ.add(ct.getRightTree());
+                    result.add(currentLevel);
+                    while (!subtreeQ.isEmpty()) {
+                        currentLevel.clear();
+                        Tree tt = subtreeQ.remove();
+                        currentLevel.add(tt.getValue());
+                        treeQ.add(tt.getLeftTree());
+                        treeQ.add(tt.getRightTree());
+                        result.add(currentLevel);
+                    }
+                } catch (EmptyE ignored) { }
+            }
+
+            result.add(currentLevel);
+        return result;
+        }
 
 
-        } catch (EmptyE e) {return new ArrayList<>();}
-        return null;
-    }
+
+
 
     static Tree fromArray (int[] vs) {
         Tree t = new Empty();
@@ -183,7 +202,7 @@ class Empty extends Tree {
     }
 
     int diameter () {
-        return 1;
+        return 0;
     }
 
     Tree map (Function<Integer,Integer> f) {
@@ -191,7 +210,7 @@ class Empty extends Tree {
     }
 
     int reduce (int base, TriFunction<Integer,Integer,Integer,Integer> f) {
-        return 0;
+        return base;
     }
 
     public TreePrinter.PrintableNode getLeft() { return null; }
@@ -268,7 +287,7 @@ class Node extends Tree {
 
     int reduce (int base, TriFunction<Integer,Integer,Integer,Integer> f) {
 
-        return f.apply(value, rightTree.reduce(base,f), leftTree.reduce(base,f));
+        return f.apply(value, leftTree.reduce(base,f), rightTree.reduce(base,f));
     }
 
     public TreePrinter.PrintableNode getLeft() {
