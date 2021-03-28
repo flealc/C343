@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 class EmptyBSTE extends Exception {}
 
 abstract class BST implements TreePrinter.PrintableNode {
@@ -35,15 +37,14 @@ class Empty extends BST {
 
     // deletes int v from tree; if v not in tree, returns tree as is
     BST delete (int v) {
-        // TODO
-        return null;
+        return this;
     }
 
     // deletes leftmost child from empty tree... since leaf doesn't exist,
     // what should we do here ?
     Pair<Integer, BST> deleteLeftMostChild() throws EmptyBSTE {
-        // TODO
-        return null;
+
+        throw new EmptyBSTE();
     }
 
     public TreePrinter.PrintableNode getLeft() { return null; }
@@ -84,16 +85,49 @@ class BSTNode extends BST {
     // (hint: we know that int v is not in tree after we have traversed what was necessary)
     // if int v is the root, we want to delete it and replace with leftmost leaf in the right subtree
     BST delete (int v) {
-        // TODO
-        return null;
+        BST newBST = new Empty();
+        Pair temp;
+
+
+            if (v == value) {
+                try {
+                temp = rightTree.deleteLeftMostChild();
+                int newValue = (int) temp.getFirst();
+                BST newRightTree = (BST) temp.getSecond();
+
+                return new BSTNode(newValue, leftTree, newRightTree);
+                } catch (EmptyBSTE e) {return leftTree;}
+            } else if (v < value) {
+                return new BSTNode(value, leftTree.delete(v), rightTree);
+            } else if (v > value) {
+                return new BSTNode(value, leftTree, rightTree.delete(v));
+            }
+                return newBST;
+            
     }
 
     // returns a pair with the value of the leftmost leaf and the right subtree of this leftmost leaf
     // a very helpful visualization is posted on the canvas Lab 10 page.
+
     Pair<Integer, BST> deleteLeftMostChild() {
-        // TODO
-        return null;
+
+        if (leftTree.isEmpty()) {
+            return new Pair(getValue(), rightTree);
+        } else {
+            int valx = getValue();
+            BST toRecurr = leftTree;
+            while (!toRecurr.isEmpty()) {
+                try {
+                    valx = toRecurr.getValue();
+                    toRecurr = toRecurr.getLeftTree();
+                } catch (EmptyBSTE t) { }
+            }
+            return new Pair(valx, new BSTNode(value, leftTree.delete(valx), rightTree));
+
+        }
+
     }
+
 
     public TreePrinter.PrintableNode getLeft() {
         if (leftTree.isEmpty()) return null;
