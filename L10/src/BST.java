@@ -42,8 +42,7 @@ class Empty extends BST {
     // deletes leftmost child from empty tree... since leaf doesn't exist,
     // what should we do here ?
     Pair<Integer, BST> deleteLeftMostChild() throws EmptyBSTE {
-        // TODO
-        return null;
+        throw new EmptyBSTE();
     }
 
     public TreePrinter.PrintableNode getLeft() { return null; }
@@ -91,8 +90,9 @@ class BSTNode extends BST {
     // returns a pair with the value of the leftmost leaf and the right subtree of this leftmost leaf
     // a very helpful visualization is posted on the canvas Lab 10 page.
     Pair<Integer, BST> deleteLeftMostChild() {
-        // TODO
-        return null;
+        try {
+
+        } catch (EmptyBSTE d) {return new Pair(null, new Empty());}
     }
 
     public TreePrinter.PrintableNode getLeft() {

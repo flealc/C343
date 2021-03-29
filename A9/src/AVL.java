@@ -133,6 +133,14 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      *     node is rotated in the appropriate direction.
      */
     Node<E> balance (E data, AVL<E> left, AVL<E> right) {
+
+        if (left.height() - right.height() > 1 || right.height() - left.height() > 1) {
+            return new Node(data, left, right);
+        } else {
+            if 
+        }
+
+
         return null; // TODO
     }
 
