@@ -103,7 +103,7 @@ class BSTNode extends BST {
                 return new BSTNode(value, leftTree, rightTree.delete(v));
             }
                 return newBST;
-            
+
     }
 
     // returns a pair with the value of the leftmost leaf and the right subtree of this leftmost leaf
