@@ -3,6 +3,8 @@
 // Empty AVL exception
 //-----------------------------------------------------------------------
 
+import com.sun.source.tree.Tree;
+
 class EmptyAVLE extends Exception {}
 
 //-----------------------------------------------------------------------
@@ -133,15 +135,24 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      *     node is rotated in the appropriate direction.
      */
     Node<E> balance (E data, AVL<E> left, AVL<E> right) {
+        Node balanced = new Node(0, new Empty(), new Empty());
 
-        if (left.height() - right.height() > 1 || right.height() - left.height() > 1) {
+        if (left.height() - right.height() <= 1) {
             return new Node(data, left, right);
-        } else {
-            if 
-        }
 
+        } else if (right.height() + 1 < left.height()) {
+            try {
+                Node toPosRot = new Node(left.data(), left.left(), left.right());
+                TreePrinter.print(toPosRot);
+                Node posRotatedLeftNode = toPosRot;//.possibleRotateRight();
+                TreePrinter.print(posRotatedLeftNode);
+                balanced = new Node(posRotatedLeftNode.data(), posRotatedLeftNode.left(), new Node(data, posRotatedLeftNode.right(), right));
+            } catch (EmptyAVLE e) {
+            }
+            return balanced;
 
-        return null; // TODO
+        } else return null;
+        // TODO
     }
 
     /**
@@ -150,7 +161,16 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * otherwise do nothing
      */
     Node<E> possibleRotateLeft () {
-        return null; // TODO
+
+        if (right.height() + 1 < left.height()) {
+            try {
+                return new Node(right.data(), new Node(data, left, right.left()), new Node(right.right().data(), new Empty(), right.right()));
+            } catch (EmptyAVLE e) { }
+        }
+        return new Node(data, left, right);
+
+
+
     }
 
     /**
@@ -159,7 +179,17 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * otherwise do nothing
      */
     Node<E> possibleRotateRight () {
-        return null; // TODO
+        if (right.height() < left.height()) {
+            try {
+
+                return new Node(left.data(), left.left(), new Node(data, left.right(), right));
+            } catch (EmptyAVLE e) { }
+        }
+
+        return this;
+
+
+        // TODO
     }
 
     /**

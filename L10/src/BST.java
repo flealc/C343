@@ -43,10 +43,10 @@ class Empty extends BST {
     // deletes leftmost child from empty tree... since leaf doesn't exist,
     // what should we do here ?
     Pair<Integer, BST> deleteLeftMostChild() throws EmptyBSTE {
-<<<<<<< HEAD
-=======
 
->>>>>>> b11554f24baca45d9f8f6bd613acff5192cead11
+
+
+
         throw new EmptyBSTE();
     }
 
@@ -113,11 +113,9 @@ class BSTNode extends BST {
     // a very helpful visualization is posted on the canvas Lab 10 page.
 
     Pair<Integer, BST> deleteLeftMostChild() {
-<<<<<<< HEAD
-        try {
 
-        } catch (EmptyBSTE d) {return new Pair(null, new Empty());}
-=======
+       
+
 
         if (leftTree.isEmpty()) {
             return new Pair(getValue(), rightTree);
@@ -134,7 +132,7 @@ class BSTNode extends BST {
 
         }
 
->>>>>>> b11554f24baca45d9f8f6bd613acff5192cead11
+
     }
 
 

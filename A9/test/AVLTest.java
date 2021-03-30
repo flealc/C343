@@ -153,5 +153,20 @@ public class AVLTest {
         assertEquals(1,AVL.getRRotations());
         assertEquals(1,AVL.getLRotations());
     }
+
+    @Test
+    public void posRot () throws  EmptyAVLE {
+
+        AVL t = new Node(20,
+                new Node(10,
+                        new Node(5, new Empty(), new Empty()),
+                        new Node(15, new Empty(), new Empty())),
+                new Node(30, new Empty(), new Empty()));
+
+        Node u = new Node(20, new Empty(), new Empty());
+
+//u.balance(19, t, new Empty());
+        TreePrinter.print(u.balance(40, t, new Empty()));
+    }
 }
 
