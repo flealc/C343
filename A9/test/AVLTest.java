@@ -163,10 +163,50 @@ public class AVLTest {
                         new Node(15, new Empty(), new Empty())),
                 new Node(30, new Empty(), new Empty()));
 
-        Node u = new Node(20, new Empty(), new Empty());
+        Node u = new Node(40, new Empty(), t);
 
-//u.balance(19, t, new Empty());
-        TreePrinter.print(u.balance(40, t, new Empty()));
+
+        AVL v = new Node(20,
+                new Node(10, new Empty(), new Empty()),
+                new Node(30,
+                new Node(25, new Empty(), new Empty()),
+                new Empty()));
+
+
+        AVL y = new Node(20,
+                new Node(10, new Empty(), new Empty()),
+                new Node(30,
+                        new Node(25, new Empty(), new Empty()),
+                        new Node(35, new Empty(), new Empty())));
+
+        Node w = new Node(40, v, new Node(50, new Empty(), new Empty()));
+
+        Node x = new Node(40, y, new Node(50, new Empty(), new Empty()));
+        //TreePrinter.print(new Node(40, v, new Node(50, new Empty(), new Empty())));
+        //TreePrinter.print(w.balance(40, v, new Node(50, new Empty(), new Empty())));
+
+        AVL empty = new Empty();
+        TreePrinter.print(empty);
+        empty = empty.insert(40);
+        empty = empty.insert(30);
+        empty = empty.insert(50);
+        empty = empty.insert(20);
+        empty = empty.insert(55);
+        empty = empty.insert(45);
+        empty = empty.insert(60);
+
+        TreePrinter.print(empty);
+
+        //TreePrinter.print(x.balance(40, y, new Node(50, new Empty(), new Empty())));
+
+
+       //TreePrinter.print(t);
+      //System.out.println(t.extractLeftMost().getFirst().toString());
+       // System.out.println(t.extractLeftMost().getSecond().toString());
+
+        //System.out.println(v.find(0));
+
     }
+
 }
 

@@ -135,24 +135,15 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      *     node is rotated in the appropriate direction.
      */
     Node<E> balance (E data, AVL<E> left, AVL<E> right) {
-        Node balanced = new Node(0, new Empty(), new Empty());
 
-        if (left.height() - right.height() <= 1) {
+        if (right.height() + 1 < left.height()) {
+            return rotateRight();
+
+        } else if (left.height() + 1 < right.height()) {
+            return rotateLeft();
+        }
             return new Node(data, left, right);
 
-        } else if (right.height() + 1 < left.height()) {
-            try {
-                Node toPosRot = new Node(left.data(), left.left(), left.right());
-                TreePrinter.print(toPosRot);
-                Node posRotatedLeftNode = toPosRot;//.possibleRotateRight();
-                TreePrinter.print(posRotatedLeftNode);
-                balanced = new Node(posRotatedLeftNode.data(), posRotatedLeftNode.left(), new Node(data, posRotatedLeftNode.right(), right));
-            } catch (EmptyAVLE e) {
-            }
-            return balanced;
-
-        } else return null;
-        // TODO
     }
 
     /**
@@ -162,14 +153,12 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      */
     Node<E> possibleRotateLeft () {
 
-        if (right.height() + 1 < left.height()) {
+        if (right.height() > left.height()) {
             try {
-                return new Node(right.data(), new Node(data, left, right.left()), new Node(right.right().data(), new Empty(), right.right()));
+                return new Node(right.data(), new Node(data, left, right.left()),right.right());
             } catch (EmptyAVLE e) { }
         }
         return new Node(data, left, right);
-
-
 
     }
 
@@ -179,17 +168,14 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * otherwise do nothing
      */
     Node<E> possibleRotateRight () {
+
         if (right.height() < left.height()) {
             try {
-
                 return new Node(left.data(), left.left(), new Node(data, left.right(), right));
             } catch (EmptyAVLE e) { }
         }
+        return new Node(data, left, right);
 
-        return this;
-
-
-        // TODO
     }
 
     /**
@@ -207,7 +193,12 @@ class Node<E extends Comparable<E>> extends AVL<E> {
     Node<E> rotateRight() {
         Rrotations++;
         assert !left.isEmpty();
-        return null; // TODO
+            Node<E> toPosRotL = (Node<E>) left;
+            Node<E> posRotatedLeftNode = toPosRotL.possibleRotateLeft();
+            Node<E> rotatedRight = new Node(posRotatedLeftNode.data(), posRotatedLeftNode.left(), new Node(data, posRotatedLeftNode.right(), right));
+
+        return rotatedRight;
+
     }
 
     /**
@@ -216,7 +207,11 @@ class Node<E extends Comparable<E>> extends AVL<E> {
     Node<E> rotateLeft() {
         Lrotations++;
         assert !right.isEmpty();
-        return null; // TODO
+            Node<E> toPosRotR = (Node<E>) right;
+            Node<E> posRotatedRightNode = toPosRotR.possibleRotateRight();
+            Node<E> rotatedLeft = new Node(posRotatedRightNode.data(), new Node(data, left, posRotatedRightNode.left()), posRotatedRightNode.right());
+
+        return rotatedLeft;
     }
 
     //--------------------------
@@ -241,7 +236,11 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * current data.
      */
     boolean find(E key) {
-        return false; // TODO
+
+        if (key.compareTo(data) == 0) return true;
+        else if (key.compareTo(data) == 1) return right.find(key);
+        else if (key.compareTo(data) == -1) return left.find(key);
+        else return false;// TODO
     }
 
     /**
@@ -252,7 +251,13 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * re-balance it.
      */
     AVL<E> insert(E key) {
-        return null; // TODO
+
+        if (key.compareTo(data) == 0 || (key.compareTo(data) == -1)) {
+            return balance(data, left.insert(key), right);
+        }
+            return balance(data, left, right.insert(key));
+
+
     }
 
     /**
@@ -268,7 +273,26 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * node.
      */
     AVL<E> delete(E key) {
-        return null; // TODO
+        AVL newAVL = new Empty();
+        Pair temp;
+
+        if (data == key) {
+            try {
+                temp = right.extractLeftMost();
+                int newValue = (int) temp.getFirst();
+                AVL newRightTree = (AVL) temp.getSecond();
+
+                return new Node(newValue, left, newRightTree);
+            } catch (EmptyAVLE e) {return left;}
+        } else if (key.compareTo(data) == -1) {
+            return new Node(data, left.delete(key), right);
+        } else if (key.compareTo(data) == 1) {
+            return new Node(data, left, right.delete(key));
+        }
+
+        return newAVL;
+
+
     }
 
     /**
@@ -289,7 +313,36 @@ class Node<E extends Comparable<E>> extends AVL<E> {
      * unbalanced, it would be balanced before returning it.
      */
     Pair<E, AVL<E>> extractLeftMost() {
-        return null; // TODO
+/*
+try {
+
+    return new Pair(left, new Node<E>(data, left.right(), right));
+} catch (EmptyAVLE e) {
+    return new Pair(data, right);
+
+ */
+        return null;
+
+        /*
+        if (left.isEmpty()) {
+            return new Pair(data, right);
+        } else {
+            E valx = (E)data;
+            AVL toRecurr = left;
+            while (!toRecurr.isEmpty()) {
+                try {
+                    valx = (E)toRecurr.data();
+                    toRecurr = toRecurr.left();
+                } catch (EmptyAVLE t) { }
+            }
+            AVL toReturn = balance(data, left.delete(valx), right);
+            return new Pair(valx, toReturn);
+                    //new Node(data, left.delete(valx), right));
+
+        }
+
+ */
+
     }
 
     //--------------------------

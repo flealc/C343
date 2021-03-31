@@ -132,8 +132,8 @@ abstract class Tree implements TreePrinter.PrintableNode {
         ArrayList<Integer> currentLevel = new ArrayList();
         Queue<Tree> treeQ = new LinkedList<>();
         Queue<Tree> subtreeQ = new LinkedList<>();
-
         treeQ.add(t);
+
     int i = t.height();
     while (i != 0){
         while (!treeQ.isEmpty()) {
@@ -145,6 +145,8 @@ abstract class Tree implements TreePrinter.PrintableNode {
             } catch (EmptyE ignored) {}
         }
         result.add(currentLevel);
+        System.out.println(currentLevel.toString());
+        System.out.println("");
         currentLevel = new ArrayList<>();
         treeQ.addAll(subtreeQ);
         subtreeQ= new LinkedList<>();
