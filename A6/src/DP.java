@@ -173,7 +173,25 @@ class DP {
      *     second call. Choose the longer of the two results
      */
     static List<Character> lcs (List<Character> cs1, List<Character> cs2) {
-        return null; // TODO
+        try {
+            if (cs1.getFirst().equals(cs2.getFirst())) {
+                // if the characters are equal return a list with first as the elem and rest as recursion with rest of lists
+                return new Node<>(cs1.getFirst(), lcs(cs1.getRest(), cs2.getRest()));
+            }
+            else {
+                List<Character> l1 = lcs(cs1.getRest(), cs2);
+                List<Character> l2 = lcs(cs1, cs2.getRest());
+                if (l1.length() > l2.length()) {
+                    return l1;
+                }
+                else {
+                    return l2;
+                }
+            }
+        }
+        catch (EmptyListE e) {
+            return new Empty<>();
+        }
     }
 
     static final Map<Pair<List<Character>,List<Character>>,List<Character>> lcsMemo = new HashMap<>();
