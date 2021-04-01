@@ -148,8 +148,10 @@ public class AVLTest {
         t = t.insert(88);
         t = t.insert(48);
         t = t.insert(62);
+        TreePrinter.print(t);
         assertEquals(0,AVL.getRotations());
         t.delete(32);
+        TreePrinter.print(t);
         assertEquals(1,AVL.getRRotations());
         assertEquals(1,AVL.getLRotations());
     }
@@ -157,11 +159,11 @@ public class AVLTest {
     @Test
     public void posRot () throws  EmptyAVLE {
 
-        AVL t = new Node(20,
-                new Node(10,
-                        new Node(5, new Empty(), new Empty()),
-                        new Node(15, new Empty(), new Empty())),
-                new Node(30, new Empty(), new Empty()));
+        AVL t = new Node(50,
+                new Node(45,
+                        new Node(42, new Empty(), new Empty()),
+                        new Node(47, new Empty(), new Empty())),
+                new Node(60, new Empty(), new Empty()));
 
         Node u = new Node(40, new Empty(), t);
 
@@ -182,20 +184,20 @@ public class AVLTest {
         Node w = new Node(40, v, new Node(50, new Empty(), new Empty()));
 
         Node x = new Node(40, y, new Node(50, new Empty(), new Empty()));
-        //TreePrinter.print(new Node(40, v, new Node(50, new Empty(), new Empty())));
-        //TreePrinter.print(w.balance(40, v, new Node(50, new Empty(), new Empty())));
-
+        //TreePrinter.print(new Node(40, new Empty(), t));
+        //TreePrinter.print(w.balance(40, new Empty(), t));
+        AVL.resetRotations();;
         AVL empty = new Empty();
         TreePrinter.print(empty);
         empty = empty.insert(40);
-        empty = empty.insert(30);
         empty = empty.insert(50);
-        empty = empty.insert(20);
-        empty = empty.insert(55);
-        empty = empty.insert(45);
-        empty = empty.insert(60);
+        empty = empty.insert(43);
+        assertEquals(1, AVL.getLRotations());
 
         TreePrinter.print(empty);
+
+        TreePrinter.print(t);
+        TreePrinter.print(t.delete(47));
 
         //TreePrinter.print(x.balance(40, y, new Node(50, new Empty(), new Empty())));
 
@@ -204,7 +206,7 @@ public class AVLTest {
       //System.out.println(t.extractLeftMost().getFirst().toString());
        // System.out.println(t.extractLeftMost().getSecond().toString());
 
-        //System.out.println(v.find(0));
+
 
     }
 

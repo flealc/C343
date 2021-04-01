@@ -1,5 +1,9 @@
 import org.w3c.dom.Node;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 class EmptyBSTE extends Exception {}
 
 abstract class BST implements TreePrinter.PrintableNode {
@@ -17,6 +21,31 @@ abstract class BST implements TreePrinter.PrintableNode {
     // to format the output so that we can tell what values are in the subtrees; it doesn't need to be
     // as pretty as TreePrinter.
     static void BFSPrint (BST t) {
+        ArrayList<ArrayList<Integer>> result = new ArrayList();
+        ArrayList<Integer> currentLevel = new ArrayList();
+        Queue<BST> treeQ = new LinkedList<>();
+        Queue<BST> subtreeQ = new LinkedList<>();
+        treeQ.add(t);
+
+        //int i = t.height();
+        while (!subtreeQ.isEmpty() || !subtreeQ.isEmpty()){
+            while (!treeQ.isEmpty()) {
+                try {
+                    BST ct = treeQ.remove();
+                    currentLevel.add(ct.getValue());
+                    subtreeQ.add(ct.getLeftTree());
+                    subtreeQ.add(ct.getRightTree());
+                } catch (EmptyBSTE ignored) {}
+            }
+            result.add(currentLevel);
+            System.out.println(currentLevel.toString());
+            System.out.println("");
+            currentLevel = new ArrayList<>();
+            treeQ.addAll(subtreeQ);
+            subtreeQ= new LinkedList<>();
+
+        }
+
         // TODO extra credit
     }
 }

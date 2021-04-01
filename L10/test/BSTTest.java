@@ -22,8 +22,8 @@ public class BSTTest {
         tree = tree.insert(10);
         tree = tree.insert(8);
         tree = tree.insert(8);
-        TreePrinter.print(tree);
-        tree = tree.delete(9);
-        TreePrinter.print(tree);
+        //TreePrinter.print(tree);
+        //tree = tree.delete(9);
+        BST.BFSPrint(tree);
     }
 }
