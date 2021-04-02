@@ -10,7 +10,15 @@ class TrieTest {
 
     @Test
     public void insert() {
-        // TODO test insert
+        Trie trie = new Trie();
+        trie.insert("hello");
+        trie.insert("world");
+
+        assertFalse(trie.contains("hella"));
+        assertTrue(trie.contains("hello"));
+        assertTrue(trie.contains("world"));
+        assertTrue(trie.possiblePrefix("hell"));
+
     }
 
     @Test

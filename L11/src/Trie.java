@@ -1,3 +1,4 @@
+
 import java.util.Hashtable;
 
 public class Trie implements Words {
@@ -15,7 +16,28 @@ public class Trie implements Words {
      * Inserts the string s in the current trie.
      */
     void insert(String s) {
-        // TODO
+
+        if  (s.length() == 0) this.endsHere = true;
+        else {
+
+            char first = s.charAt(0);
+            String rest = s.substring(1);
+
+
+            if (this.children.containsKey(first)) {
+                Trie t = children.get(first);
+                t.insert(rest);
+            }
+            else {
+                Trie newTrie = new Trie();
+                newTrie.insert(rest);
+               children.put(first, newTrie);
+
+            }
+
+        }
+
+
     }
 
     /**

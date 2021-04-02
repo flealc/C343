@@ -3,6 +3,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 public class Board {
     private final Tile[][] tiles;
@@ -71,9 +72,25 @@ public class Board {
      * - otherwise visit all fresh neighbors recursively
      */
     public HashSet<String> findWordsFromPos(int r, int c, String s) {
-        getFreshNeighbors().remove();
-        // TODO
-        return null;
+       get(r,c).setVisited();
+       HashSet<String> toReturn = new HashSet<>();
+       String extendS = s + get(r,c).toString().toLowerCase();
+
+
+       if (dict.contains(extendS)) {
+           toReturn.add(extendS);
+       }
+       if (!dict.possiblePrefix(extendS)) {
+           get(r,c).reset();
+           return toReturn;
+        } else
+           for (Tile t : getFreshNeighbors(r,c)) {
+               toReturn.addAll(findWordsFromPos(t.getRow(), t.getCol(), extendS));
+           }
+
+    get(r,c).reset();
+    return toReturn;
+
     }
 
     public HashSet<String> findWords() {

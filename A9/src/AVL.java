@@ -294,7 +294,7 @@ class Node<E extends Comparable<E>> extends AVL<E> {
             } catch (EmptyAVLE e) {newAVL = left;}
 
         return newAVL;
-            
+
     }
 
     /**
