@@ -71,6 +71,7 @@ public class Board {
      * - otherwise visit all fresh neighbors recursively
      */
     public HashSet<String> findWordsFromPos(int r, int c, String s) {
+        getFreshNeighbors().remove();
         // TODO
         return null;
     }
