@@ -28,14 +28,16 @@ abstract class BST implements TreePrinter.PrintableNode {
         treeQ.add(t);
 
         //int i = t.height();
-        while (!subtreeQ.isEmpty() || !subtreeQ.isEmpty()){
+        while (!treeQ.isEmpty()){
+            System.out.println("Hi");
             while (!treeQ.isEmpty()) {
                 try {
                     BST ct = treeQ.remove();
-                    currentLevel.add(ct.getValue());
+                    //currentLevel.add(ct.getValue());
+                    System.out.println()
                     subtreeQ.add(ct.getLeftTree());
                     subtreeQ.add(ct.getRightTree());
-                } catch (EmptyBSTE ignored) {}
+                } catch (EmptyBSTE ignored) {currentLevel.add(-42);}
             }
             result.add(currentLevel);
             System.out.println(currentLevel.toString());
