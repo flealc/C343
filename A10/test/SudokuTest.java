@@ -51,6 +51,33 @@ class SudokuTest {
         System.out.println("----------------------");
         assertEquals(889, run(4));
     }
+
+    @Test
+    public void myTryCell () throws FileNotFoundException{
+        Scanner s = new Scanner(new File("sudoku-board-" + 2 + ".txt"));
+        Sudoku puzzle = Sudoku.read(s);
+        //System.out.printf("puzzle %n%s%n", puzzle);
+        puzzle.solve();
+        //puzzle.tryCell(0,3);
+        //puzzle.tryCell(0,4);
+        //puzzle.tryCell(0,5);
+       // assertFalse(puzzle.tryCell(0,3));
+       // assertTrue(puzzle.tryCell(0,7));
+       // assertFalse(puzzle.tryCell(0,7));
+
+       // puzzle.tryCell(1,0);
+       // puzzle.tryCell(1,1);
+       // puzzle.tryCell(1,2);
+       // puzzle.tryCell(1,4);
+       // puzzle.tryCell(1,6);
+        //puzzle.tryCell(1,7);
+        //puzzle.tryCell(1,8);
+
+        System.out.println(puzzle.getBacktracking());
+       System.out.printf("Filled out puzzle %n%s%n", puzzle);
+    }
+
+
 }
 
 /*

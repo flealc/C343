@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 class Sudoku {
@@ -52,15 +53,37 @@ class Sudoku {
     }
 
     boolean solve () {
-        return false; // TODO
+        if (tryColumn(0)) return true;
+        else return false;
     }
 
     boolean tryColumn (int col) {
-        return false; // TODO
+        if (col == dim) {
+            return true;
+        }
+
+        return tryCell(col, 0);
     }
 
     boolean tryCell (int col, int row) {
-        return false; // TODO
+
+        if (row == dim) return tryColumn(col + 1);
+
+        if (isBlank(row, col)) {
+            int n;
+            for (n = 1; n <= dim; n ++) {
+                if (isValid(n, row, col)) {
+                    cells[col][row] = n;
+                    if (tryCell(col, row + 1)) return true;
+                    cells[col][row] = EMPTY;
+                    backtracking ++;
+                }
+            }
+            return false;
+        }
+
+
+        return tryCell(col, row + 1);
     }
     
     public String toString () {
