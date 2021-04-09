@@ -11,9 +11,29 @@ abstract class List<E> {
     abstract void setFirst (E first) throws EmptyListE;
     abstract E getFirst() throws EmptyListE;
     static <E> Optional<E> cycleStart (List<E> ls) {
-        // TODO choose whichever algorithm you would like to implement cycle detection
-        // for inspiration, please check out L12's canvas page
-        return Optional.empty();
+
+        List<E> slowa = ls;
+        List<E> fasta = ls;
+
+try {
+    do {
+        slowa = slowa.getRest();
+        fasta = fasta.getRest().getRest();
+
+    } while (!slowa.getFirst().equals(fasta.getFirst()));
+    slowa = ls;
+
+} catch (EmptyListE e) {return Optional.empty();}
+
+
+        while (!slowa.getFirst().equals(fasta.getFirst())) {
+            slowa = slowa.getRest();
+            fasta = fasta.getRest();
+        }
+
+        return Optional.of(fasta.getFirst());
+
+
     }
 }
 
