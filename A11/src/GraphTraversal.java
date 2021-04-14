@@ -110,12 +110,11 @@ class ShortestPaths extends GraphTraversal {
     }
 
     void relax(Edge e) {
-        if (e.getDestination().getValue() == (Integer.MAX_VALUE)) e.getDestination().setValue(e.getSource().getValue() + e.getWeight());
-        else if (e.getDestination().getValue() > (e.getSource().getValue() + e.getWeight())) e.getDestination().setValue((e.getSource().getValue() + e.getWeight()));
-        //System.out.println(e.getDestination().getName() + " updated to " + e.getDestination().getValue());
-        e.getDestination().moveItUp();
-       // if (e.getDestination().getHeapIndex() != 0) e.getDestination().moveItUp();;
-
+        int distance = (e.getSource().getValue() == Integer.MAX_VALUE) ? e.getSource().getValue() : e.getSource().getValue() + e.getWeight();
+        if (distance < e.getDestination().getValue()) {
+            e.getDestination().updateValue(i -> distance);
+            e.getDestination().moveItUp();
+        }
     }
 
 
@@ -125,7 +124,6 @@ class ShortestPaths extends GraphTraversal {
         source.moveItUp();
         //if (source.getHeapIndex() != 0) source.moveItUp();
         traverse(node -> {
-            if (node.getValue() == Integer.MAX_VALUE) throw new Error("Error");
         });
     }
 }
