@@ -39,7 +39,8 @@ class GraphTraversalTest {
         neighbors.put(v7, new ArrayList<>(Collections.singletonList(v76)));
 
         TopologicalSort g = new TopologicalSort(neighbors);
-        Queue<Node> sort = g.sort();
+
+       Queue<Node> sort = g.sort();
         assertEquals(7, sort.size());
         assertEquals(v1,sort.poll());
         assertEquals(v2,sort.poll());
@@ -48,6 +49,7 @@ class GraphTraversalTest {
         assertEquals(v3,sort.poll());
         assertEquals(v7,sort.poll());
         assertEquals(v6,sort.poll());
+
     }
 
     @Test
@@ -70,6 +72,7 @@ class GraphTraversalTest {
         Edge ft = new Edge(f,t,4);
 
         Hashtable<Node, ArrayList<Edge>> neighbors = new Hashtable<>();
+
         neighbors.put(s, new ArrayList<>(Arrays.asList(sa,sb)));
         neighbors.put(a, new ArrayList<>(Arrays.asList(ab,af,ac)));
         neighbors.put(b, new ArrayList<>(Collections.singletonList(bf)));
@@ -79,12 +82,15 @@ class GraphTraversalTest {
 
         ShortestPaths g = new ShortestPaths(neighbors);
         g.fromSource(s);
+
         assertEquals(0, s.getValue());
         assertEquals(3, a.getValue());
         assertEquals(4, b.getValue());
         assertEquals(5, c.getValue());
         assertEquals(6, f.getValue());
         assertEquals(10, t.getValue());
+
+
     }
 
     @Test
@@ -97,6 +103,7 @@ class GraphTraversalTest {
         Node a5 = new Node("5");
         Node a6 = new Node("6");
         Node a7 = new Node("7");
+
 
         Edge e04 = new Edge(a0, a4, 6);
         Edge e13 = new Edge(a1, a3, 5);
@@ -130,5 +137,154 @@ class GraphTraversalTest {
         assertEquals(23, a5.getValue());
         assertEquals(9, a6.getValue());
         assertEquals(15, a7.getValue());
+    }
+/*
+    @Test
+    public void DFSTest() {
+
+        Node s = new Node("s");
+        Node a = new Node("a");
+        Node b = new Node("b");
+        Node c = new Node("c");
+        Node f = new Node("f");
+        Node t = new Node("t");
+
+        Edge sa = new Edge(s,a);
+        Edge sb = new Edge(s,b);
+        Edge ab = new Edge(a,b);
+        Edge bf = new Edge(b,f);
+        Edge af = new Edge(a,f);
+        Edge ac = new Edge(a,c);
+        Edge cf = new Edge(c,f);
+        Edge ct = new Edge(c,t);
+        Edge ft = new Edge(f,t);
+
+        Hashtable<Node, ArrayList<Edge>> neighbors = new Hashtable<>();
+        neighbors.put(s, new ArrayList<>(Arrays.asList(sa,sb)));
+        neighbors.put(a, new ArrayList<>(Arrays.asList(ab,af,ac)));
+        neighbors.put(b, new ArrayList<>(Collections.singletonList(bf)));
+        neighbors.put(c, new ArrayList<>(Arrays.asList(cf,ct)));
+        neighbors.put(f, new ArrayList<>(Collections.singletonList(ft)));
+        neighbors.put(t, new ArrayList<>());
+
+        DFS testDFS = new DFS(neighbors);
+        BFS testBFS = new BFS(neighbors);
+
+        System.out.println(testDFS.startFrom(s));
+        System.out.println(testBFS.startFrom(s));
+    }
+
+
+    @Test
+    public void heapTest() {
+        Node a0 = new Node("0");
+        Node a1 = new Node("1");
+        Node a2 = new Node("2");
+        Node a3 = new Node("3");
+        Node a4 = new Node("4");
+        Node a5 = new Node("5");
+        Node a6 = new Node("6");
+        Node a7 = new Node("7");
+
+
+        a0.setValue(0);
+        a1.setValue(1);
+        a2.setValue(2);
+        a3.setValue(3);
+        a4.setValue(4);
+        a5.setValue(5);
+        a6.setValue(6);
+        a7.setValue(7);
+        ArrayList<Node> nodest = new ArrayList<>();
+
+        nodest.add(a7);
+        nodest.add(a2);
+        nodest.add(a5);
+        nodest.add(a3);
+        nodest.add(a1);
+        nodest.add(a4);
+        nodest.add(a0);
+        nodest.add(a6);
+
+
+
+
+
+
+        Set<Node> set = Set.copyOf(nodest);
+
+
+        Heap testHeap = new Heap(set);
+
+/*
+        testHeap.insert(a2);
+        testHeap.insert(a3);
+        testHeap.insert(a1);
+        testHeap.insert(a7);
+        testHeap.insert(a4);
+        testHeap.insert(a0);
+
+
+
+
+
+
+
+
+    }
+    */
+
+    @Test
+    public void shortestPathArghhjksh () {
+        Node a0 = new Node("0");
+       /* Node a1 = new Node("1");
+        Node a2 = new Node("2");
+        Node a3 = new Node("3");
+        Node a4 = new Node("4");
+        Node a5 = new Node("5");
+        Node a6 = new Node("6");
+        Node a7 = new Node("7");
+
+        */
+
+
+        Edge e04 = new Edge(a0, a0, 6);
+        /*Edge e13 = new Edge(a1, a3, 5);
+        Edge e16 = new Edge(a1, a6, 2);
+        Edge e24 = new Edge(a2, a4, 7);
+        Edge e25 = new Edge(a2, a5, 7);
+        Edge e35 = new Edge(a3, a5, 2);
+        Edge e37 = new Edge(a3, a7, 1);
+        Edge e46 = new Edge(a4, a6, 3);
+        Edge e57 = new Edge(a5, a7, 7);
+        Edge e62 = new Edge(a6, a2, 7);
+        Edge e67 = new Edge(a6, a7, 6);
+
+         */
+
+        Hashtable<Node, ArrayList<Edge>> neighbors = new Hashtable<>();
+        neighbors.put(a0, new ArrayList<>(Collections.singletonList(e04)));
+        /*neighbors.put(a1, new ArrayList<>(Arrays.asList(e13, e16)));
+        neighbors.put(a2, new ArrayList<>(Arrays.asList(e24, e25)));
+        neighbors.put(a3, new ArrayList<>(Arrays.asList(e35, e37)));
+        neighbors.put(a4, new ArrayList<>(Collections.singletonList(e46)));
+        neighbors.put(a5, new ArrayList<>(Collections.singletonList(e57)));
+        neighbors.put(a6, new ArrayList<>(Arrays.asList(e62, e67)));
+        neighbors.put(a7, new ArrayList<>(Collections.emptyList()));
+
+         */
+
+        ShortestPaths g = new ShortestPaths(neighbors);
+        g.fromSource(a0);
+        assertEquals(0, a0.getValue());
+       /* assertEquals(Integer.MAX_VALUE, a1.getValue());
+        assertEquals(16, a2.getValue());
+        assertEquals(Integer.MAX_VALUE, a3.getValue());
+        assertEquals(6, a4.getValue());
+        assertEquals(23, a5.getValue());
+        assertEquals(9, a6.getValue());
+        assertEquals(15, a7.getValue());
+
+        */
     }
 }

@@ -30,9 +30,11 @@ class Node implements Comparable<Node> {
 
     int getValue () { return value; }
 
-    void updateValue (Function<Integer,Integer> f) {
-        this.value = f.apply(value);
-    }
+    void updateValue (Function<Integer,Integer> f) { this.value = f.apply(value); }
+
+    void moveItUp () {
+
+        heap.moveUp(this); }
 
     void setHeap (Heap heap) { this.heap = heap; }
 

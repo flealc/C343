@@ -16,6 +16,7 @@ abstract class GraphTraversal {
 
     void visit(Node u, Consumer<Node> consumer) {
         if (u.isNotVisited()) {
+         //  System.out.println("extracted & visiting " + u.getName());
             u.setVisited();
             consumer.accept(u);
             neighbors.get(u).forEach(this::relax);
@@ -72,14 +73,19 @@ class TopologicalSort extends GraphTraversal {
         super(neighbors);
         Set<Node> nodes = neighbors.keySet();
         for (Node n : nodes) n.setValue(0);
-        nodesToTraverse = new HEAP_COLL(nodes);
-        for (Node n : nodes)
-            for (Edge edge : neighbors.get(n))
+        for (Node n : nodes) {
+            for (Edge edge : neighbors.get(n)) {
                 edge.getDestination().updateValue(i -> i + 1);
+            }
+        }
+        nodesToTraverse = new HEAP_COLL(nodes);
+
     }
 
     void relax(Edge e) {
         e.getDestination().updateValue(i -> i - 1);
+        e.getDestination().moveItUp();
+
     }
 
     Queue<Node> sort() {
@@ -100,15 +106,26 @@ class ShortestPaths extends GraphTraversal {
         Set<Node> nodes = neighbors.keySet();
         for (Node n : nodes) n.setValue(Integer.MAX_VALUE);
         nodesToTraverse = new HEAP_COLL(nodes);
+
     }
 
     void relax(Edge e) {
-        return;
+        if (e.getDestination().getValue() == (Integer.MAX_VALUE)) e.getDestination().setValue(e.getSource().getValue() + e.getWeight());
+        else if (e.getDestination().getValue() > (e.getSource().getValue() + e.getWeight())) e.getDestination().setValue((e.getSource().getValue() + e.getWeight()));
+        //System.out.println(e.getDestination().getName() + " updated to " + e.getDestination().getValue());
+        e.getDestination().moveItUp();
+       // if (e.getDestination().getHeapIndex() != 0) e.getDestination().moveItUp();;
+
     }
 
+
     void fromSource(Node source) {
+
         source.updateValue(i -> 0);
+        source.moveItUp();
+        //if (source.getHeapIndex() != 0) source.moveItUp();
         traverse(node -> {
+            if (node.getValue() == Integer.MAX_VALUE) throw new Error("Error");
         });
     }
 }

@@ -37,7 +37,6 @@ class STACK_COLL extends NodeCollection {
 class HEAP_COLL extends NodeCollection {
     private final Heap heap;
     HEAP_COLL(Set<Node> nodes) { this.heap = new Heap(nodes); }
-
     boolean isEmpty() { return heap.isEmpty(); }
     void insert(Node elem) { heap.insert(elem); }
     Node extract() { return heap.extractMin(); }
