@@ -39,19 +39,7 @@ class StronglyConnected extends GraphTraversal {
     //   a <--(2)-- b
     Hashtable<Node, ArrayList<Edge>> transpose() {
         // TODO
-        Hashtable<Node, ArrayList<Edge>> newNeighbors = new Hashtable<>();
-        for (Node n : neighbors.keySet()) {
-            newNeighbors.put(n, new ArrayList<>());
-        }
-
-        for (ArrayList<Edge> es : neighbors.values()) {
-            es.forEach(e -> {
-                Edge newEdge = e.flip();
-                newNeighbors.get(newEdge.getSource()).add(newEdge);
-            });
-        }
-
-        return newNeighbors;
+        return null;
     }
 
 
@@ -62,10 +50,7 @@ class StronglyConnected extends GraphTraversal {
     // Depth-first search with a stack. Our stack is nodesToTraverse.
     List<Node> DFS(Node n) {
         // TODO
-        List<Node> ret = new ArrayList<>();
-        nodesToTraverse.insert(n);
-        traverse(ret::add);
-        return ret;
+        return null;
     }
 
     // Kosaraju's Algorithm
