@@ -5,6 +5,7 @@ abstract class GraphTraversal {
     protected Hashtable<Node, ArrayList<Edge>> neighbors;
     protected NodeCollection nodesToTraverse;
 
+
     GraphTraversal(Hashtable<Node, ArrayList<Edge>> neighbors) {
         this.neighbors = neighbors;
     }
@@ -32,14 +33,8 @@ class StronglyConnected extends GraphTraversal {
         nodesToTraverse = new STACK_COLL();
     }
 
-    // This method should reverse every edge in our graph.
-    // If we had the following graph:
-    //   a --(2)--> b
-    // Taking the transpose would give us:
-    //   a <--(2)-- b
     Hashtable<Node, ArrayList<Edge>> transpose() {
         // TODO
-        return null;
     }
 
 
@@ -47,35 +42,38 @@ class StronglyConnected extends GraphTraversal {
         nodesToTraverse.insert(e.getDestination());
     }
 
-    // Depth-first search with a stack. Our stack is nodesToTraverse.
     List<Node> DFS(Node n) {
         // TODO
-        return null;
     }
 
-    // Kosaraju's Algorithm
-    List<List<Node>> findSCCs(Node s) {
-        LinkedList<List<Node>> stackofcomponents = new LinkedList<>();
-        List<List<Node>> ans = new ArrayList<>();
+    Stack<Node> orderOfDFS() {
+        Stack<Node> dfsStack = new Stack<>();
+        Set<Node> nodes = neighbors.keySet();
+        nodes.forEach(Node::reset);
 
-        // Our first DFS
-        for (Node n : neighbors.keySet()) {
-            if (!n.isVisited()) stackofcomponents.addFirst(DFS(n));
+        for (Node n : nodes) {
+            if (!n.isVisited()) {
+                orderOfDFSHelper(n, dfsStack);
+            }
         }
 
-        this.neighbors = transpose();
-        neighbors.keySet().forEach(Node::reset);
+        return dfsStack;
+    }
 
-        // We have successfully finished our first DFS, along with getting the transpose of the graph...
-        // There might be more SCCs inside our stack of components, we should DFS again.
-        // What do we need to do here with our stackofcomponets? Pay attention to your types in the lines below,
-        // they give a huge hint. Replace "???".
+    void orderOfDFSHelper(Node n, Stack<Node> dfsStack) {
+        n.setVisited();
+
+        for (Edge outgoingEdge : neighbors.get(n)) {
+            Node destination = outgoingEdge.getDestination();
+            if (!destination.isVisited()) {
+                orderOfDFSHelper(destination, dfsStack);
+            }
+        }
+
+        dfsStack.push(n);
+    }
+
+    List<List<Node>> findSCCs() {
         // TODO
-
-        for (Node n : "???") {
-            if (!n.isVisited()) ans.add(DFS(n));
-        }
-
-        return ans;
     }
 }
