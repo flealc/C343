@@ -17,8 +17,8 @@ abstract class GraphTraversal {
     void visit(Node u, Consumer<Node> consumer) {
         if (u.isNotVisited()) {
             u.setVisited();
-            neighbors.get(u).forEach(this::relax);
             consumer.accept(u);
+            neighbors.get(u).forEach(this::relax);
         }
     }
 
@@ -113,68 +113,3 @@ class ShortestPaths extends GraphTraversal {
     }
 }
 
-class Kosarajus extends GraphTraversal {
-    Kosarajus(Hashtable<Node, ArrayList<Edge>> neighbors) {
-        super(neighbors);
-        nodesToTraverse = new STACK_COLL();
-    }
-
-    void relax(Edge e) {
-        if (e.getDestination().isNotVisited()) {
-            nodesToTraverse.insert(e.getDestination());
-        }
-    }
-
-    ArrayList<ArrayList<Node>> SCC() {
-        Set<Node> nodes = neighbors.keySet();
-        for (Node n : nodes) {
-            nodesToTraverse.insert(n);
-        }
-
-        ArrayList<Queue<Node>> queues = new ArrayList<>();
-        traverse(queue::offer);
-
-        Hashtable<Node, ArrayList<Edge>> newNeighbors = transpose();
-        for (Node n : newNeighbors.keySet()) {
-            neighbors.put(n, newNeighbors.get(n));
-        }
-
-        nodesToTraverse.insert(queue.poll());
-        neighbors.keySet().forEach(Node::setNotVisited);
-
-        ArrayList<ArrayList<Node>> sccs = new ArrayList<>();
-        ArrayList<Node> currentScc = new ArrayList<>();
-        traverse(n -> {
-            currentScc.add(n);
-
-            if (nodesToTraverse.isEmpty()) {
-                sccs.add((ArrayList<Node>) currentScc.clone());
-                currentScc.clear();
-                while (!queue.isEmpty() && !queue.peek().isNotVisited()) {
-                    queue.poll();
-                }
-                if (!queue.isEmpty()) {
-                    nodesToTraverse.insert(queue.poll());
-                }
-            }
-        });
-
-        return sccs;
-    }
-
-    Hashtable<Node, ArrayList<Edge>> transpose() {
-        Hashtable<Node, ArrayList<Edge>> newNeighbors = new Hashtable<>();
-        for (Node n : neighbors.keySet()) {
-            newNeighbors.put(n, new ArrayList<>());
-        }
-
-        for (ArrayList<Edge> es : neighbors.values()) {
-            es.forEach(e -> {
-                Edge newEdge = e.flip();
-                newNeighbors.get(newEdge.getSource()).add(newEdge);
-            });
-        }
-
-        return newNeighbors;
-    }
-}

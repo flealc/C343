@@ -19,8 +19,4 @@ public class Edge {
     Node getSource () { return source; }
 
     Node getDestination() { return destination; }
-
-    Edge flip() {
-        return new Edge(destination, source);
-    }
 }

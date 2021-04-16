@@ -22,8 +22,6 @@ class Node implements Comparable<Node> {
 
     void setVisited() { this.visited = true; }
 
-    void setNotVisited() { this.visited = false; }
-
     boolean isNotVisited() {
         return !visited;
     }
