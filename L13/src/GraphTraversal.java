@@ -16,6 +16,7 @@ abstract class GraphTraversal {
 
     void visit(Node u, Consumer<Node> consumer) {
         if (!u.isVisited()) {
+
             u.setVisited();
             consumer.accept(u);
             neighbors.get(u).forEach(this::relax);
@@ -38,10 +39,24 @@ class StronglyConnected extends GraphTraversal {
     // Taking the transpose would give us:
     //   a <--(2)-- b
     Hashtable<Node, ArrayList<Edge>> transpose() {
-        // TODO
-        return null;
-    }
+        Hashtable<Node, ArrayList<Edge>> transposed = new Hashtable<>();
+        ArrayList<Edge> theEdges = new ArrayList<>();
+        for (Node n : neighbors.keySet()) {
+            transposed.put(n, new ArrayList<>());
+            for (Edge e : neighbors.get(n)) {
+                theEdges.add(e.flip());
+            }
 
+        }
+
+        for (Edge e : theEdges) {
+                transposed.get(e.getSource()).add(e);
+            }
+
+
+        return transposed;
+
+    }
 
     void relax(Edge e) {
         nodesToTraverse.insert(e.getDestination());
@@ -49,8 +64,10 @@ class StronglyConnected extends GraphTraversal {
 
     // Depth-first search with a stack. Our stack is nodesToTraverse.
     List<Node> DFS(Node n) {
-        // TODO
-        return null;
+            List<Node> result = new ArrayList<>();
+            nodesToTraverse.insert(n);
+            traverse(result::add);
+            return result;
     }
 
     // Kosaraju's Algorithm
@@ -60,7 +77,11 @@ class StronglyConnected extends GraphTraversal {
 
         // Our first DFS
         for (Node n : neighbors.keySet()) {
-            if (!n.isVisited()) stackofcomponents.addFirst(DFS(n));
+            if (!n.isVisited()) {
+                stackofcomponents.addFirst(DFS(n));
+
+            }
+
         }
 
         this.neighbors = transpose();
@@ -72,10 +93,12 @@ class StronglyConnected extends GraphTraversal {
         // they give a huge hint. Replace "???".
         // TODO
 
-        for (Node n : "???") {
-            if (!n.isVisited()) ans.add(DFS(n));
-        }
+        List<Node> newList = new ArrayList<>();
+        stackofcomponents.forEach(l -> newList.addAll(l));
 
+            for (Node n : newList ) {
+                if (!n.isVisited()) ans.add(DFS(n));
+            }
         return ans;
     }
 }
