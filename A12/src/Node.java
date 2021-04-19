@@ -58,8 +58,15 @@ class Node implements Comparable<Node> {
      * current previousEdge
      */
     ArrayList<Edge> followPreviousEdge () {
-        // TODO
-        throw new Error("TODO");
+
+        ArrayList<Edge> prvEdges = new ArrayList<>();
+
+        if (previousEdge != null) {
+           prvEdges = previousEdge.getSource().followPreviousEdge();
+           prvEdges.add(getPreviousEdge());
+        }
+        return prvEdges;
+
     }
 
     public int compareTo(Node o) {

@@ -140,8 +140,16 @@ class ShortestPath extends GraphTraversal {
      * same time.
      */
     void relax(Edge e) {
-        // TODO
-        throw new Error("TODO");
+        int sourceDistance = e.getSource().getValue();
+        if (sourceDistance != Integer.MAX_VALUE) {
+            int newDistance = sourceDistance + e.getWeight();
+            Node neighbor = e.getDestination();
+            if (newDistance < neighbor.getValue()) {
+                neighbor.updateAndMoveUp(i -> newDistance);
+                neighbor.setPreviousEdge(e);
+            }
+        }
+
     }
 
     ArrayList<Edge> fromSourceToDestination(Node source, Node destination) {
@@ -178,8 +186,15 @@ class MinimumSpanningTree extends GraphTraversal {
      *   - we also maintain information about previousEdges
      */
     void relax(Edge e) {
-        // TODO
-        throw new Error("TODO");
+        if (e.getDestination().isNotVisited()) {
+                //int newDistance = e.getWeight();
+                Node neighbor = e.getDestination();
+                if (e.getWeight() < neighbor.getValue()) {
+                    neighbor.updateAndMoveUp(i -> e.getWeight()); //newDistance
+                    neighbor.setPreviousEdge(e);
+            }
+        }
+
     }
 
     Set<Edge> fromSource(Node source) {
