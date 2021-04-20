@@ -50,7 +50,7 @@ class DFS extends GenericDFS {
          */
 
         nodes = new ArrayList<>();
-        setEnterConsumer(nodes::add);
+        setTouchConsumer(nodes::add);
 
         /*
         One the search parameters are customized we invoke
@@ -84,9 +84,12 @@ class TopologicalSort extends GenericDFS {
 
          */
         nodes = new LinkedList<>();
-        //
-        // TODO
-        //
+
+        setExitConsumer(node -> { nodes.add(0, node);
+        });
+
+
+
 
         /*
         One the search parameters are customized we invoke
@@ -119,9 +122,10 @@ class CycleDetection extends GenericDFS {
          */
         List<Node> ancestors = new ArrayList<>();
         hasCycle = false;
-        //
-        // TODO
-        //
+        setTouchConsumer(node -> {if (ancestors.contains(node)) hasCycle = true;});
+        setEnterConsumer(node -> {ancestors.add(node);});
+        setExitConsumer(node -> {ancestors.remove(node);});
+
 
         /*
         One the search parameters are customized we invoke
@@ -151,9 +155,17 @@ class Reachability extends GenericDFS {
          */
         table = new Hashtable<>();
         for (Node n : neighbors.keySet()) table.put(n, new HashSet<>());
-        //
-        // TODO
-        //
+        setEnterConsumer(node -> {
+            ArrayList <Node> reaching = new ArrayList<>();
+            reaching.add(node);
+            reaching.addAll(table.get(node));
+            Set toTable = new HashSet(reaching);
+            neighbors.get(node).forEach(e -> table.put(e.getDestination(), toTable ));
+
+        });
+
+
+
 
         /*
         One the search parameters are customized we invoke
