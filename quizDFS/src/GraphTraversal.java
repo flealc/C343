@@ -163,6 +163,14 @@ class Reachability extends GenericDFS {
             neighbors.get(node).forEach(e -> table.put(e.getDestination(), toTable ));
 
         });
+        setTouchConsumer(node -> {
+            ArrayList<Node> reaching = new ArrayList<>();
+            reaching.add(node);
+            reaching.addAll(table.get(node));
+            Set toTable = new HashSet(reaching);
+            neighbors.get(node).forEach(e -> table.put(e.getDestination(), toTable));
+
+        });
 
 
 

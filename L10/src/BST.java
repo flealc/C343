@@ -22,34 +22,96 @@ abstract class BST implements TreePrinter.PrintableNode {
     // as pretty as TreePrinter.
     static void BFSPrint (BST t) {
         ArrayList<ArrayList<Integer>> result = new ArrayList();
-        ArrayList<Integer> currentLevel = new ArrayList();
+        ArrayList<Integer> currentLevel = new ArrayList(1);
         Queue<BST> treeQ = new LinkedList<>();
         Queue<BST> subtreeQ = new LinkedList<>();
         treeQ.add(t);
+        int arraySize = 1;
 
-        //int i = t.height();
-        while (!treeQ.isEmpty()){
-            System.out.println("Hi");
+        boolean stop = false;
+        while (!stop){
             while (!treeQ.isEmpty()) {
                 try {
                     BST ct = treeQ.remove();
-                    //currentLevel.add(ct.getValue());
-                    System.out.println()
-                    subtreeQ.add(ct.getLeftTree());
-                    subtreeQ.add(ct.getRightTree());
-                } catch (EmptyBSTE ignored) {currentLevel.add(-42);}
+                    if (ct == null) {
+                        currentLevel.add(null);
+                        subtreeQ.add(null);
+                        subtreeQ.add(null);
+                    } else if (ct.isEmpty()) {
+                            currentLevel.add(null);
+                            subtreeQ.add(null);
+                            subtreeQ.add(null);
+                    } else {
+                        currentLevel.add(ct.getValue());
+                        subtreeQ.add(ct.getLeftTree());
+                        subtreeQ.add(ct.getRightTree());
+                    }} catch (EmptyBSTE ignored) {subtreeQ.add(null);}
+                }
+            stop = true;
+            for (Integer i : currentLevel) {
+                if (i != null) stop = false;
             }
-            result.add(currentLevel);
-            System.out.println(currentLevel.toString());
-            System.out.println("");
-            currentLevel = new ArrayList<>();
-            treeQ.addAll(subtreeQ);
-            subtreeQ= new LinkedList<>();
 
+            if (!stop) {
+            result.add(currentLevel);
+
+
+            arraySize *= 2;
+
+            currentLevel = new ArrayList<>(arraySize);
+            treeQ.addAll(subtreeQ);
+            subtreeQ= new LinkedList<>();}
         }
 
-        // TODO extra credit
+
+        int rootGap = (2 * (result.get(result.size() - 1).size())) - 2;
+
+        int pad = rootGap - 2;
+
+
+        for (int a = 0; a < result.size() - 1; a ++) {
+            for (int p = 0; p < pad ; p++ ) System.out.print(" ");
+
+            for (Integer i: result.get(a)) {
+
+                if (i == null) {
+                    for (int p = 0; p < rootGap; p++ ) System.out.print(" ");
+                    System.out.print("  ");
+                    for (int p = 0; p < rootGap; p++ ) System.out.print(" ");
+                } else {
+                    System.out.print("┌");
+                    for (int p = 0; p < rootGap - 1; p++ ) System.out.print("─");
+                    if (i < 10) System.out.print(" " + i);
+                    if (i >= 10) System.out.print(i);
+                    for (int p = 0; p < rootGap - 1; p++ ) System.out.print("─");
+                    System.out.print("┐");
+                }
+
+                for (int p = 0; p < pad + rootGap ; p++ ) System.out.print(" ");
+
+            }
+            System.out.println();
+            if (rootGap % 2 == 0) {
+                rootGap = rootGap / 2;
+            }else rootGap = (int) Math.ceil(rootGap / 2.0) ;
+           pad = rootGap - 2;
+        }
+
+        for (Integer i: result.get(result.size() -1)) {
+            for (int p = 0; p < rootGap; p++ ) System.out.print(" ");
+            if (i == null) {
+                System.out.print("  ");
+            } else {
+                if (i < 10) System.out.print(" " + i);
+                if (i >= 10) System.out.print(i);
+            }
+            for (int p = 0; p < rootGap; p++ ) System.out.print(" ");
+            for (int p = 0; p < pad + rootGap ; p++ ) System.out.print(" ");
+        }
+
+
     }
+
 }
 
 class Empty extends BST {
